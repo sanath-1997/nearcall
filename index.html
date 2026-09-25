@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NearCall - Enjoy Live Video Calls Near You</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f5ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            neon: '#00f2fe',
+                            pink: '#ff0844'
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                        'radar-sweep': 'radarSweep 4s linear infinite',
+                        'float-slow': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 25px rgba(99, 102, 241, 0.6), 0 0 50px rgba(0, 242, 254, 0.3)' },
+                            '50%': { boxShadow: '0 0 45px rgba(99, 102, 241, 0.9), 0 0 80px rgba(0, 242, 254, 0.6)' },
+                        },
+                        radarSweep: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        /* Continuous Ripple Effect for Primary Buttons */
+        .ripple-btn-container {
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ripple-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(99, 102, 241, 0.7);
+            animation: ripple-out 2.5s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+            pointer-events: none;
+        }
+
+        .ripple-ring:nth-child(2) {
+            animation-delay: 0.8s;
+            border-color: rgba(236, 72, 153, 0.6);
+        }
+
+        .ripple-ring:nth-child(3) {
+            animation-delay: 1.6s;
+            border-color: rgba(0, 242, 254, 0.5);
+        }
+
+        @keyframes ripple-out {
+            0% {
+                width: 100%;
+                height: 100%;
+                opacity: 0.9;
+                transform: scale(1);
+            }
+            100% {
+                width: 260%;
+                height: 260%;
+                opacity: 0;
+                transform: scale(1.6);
+            }
+        }
+
+        /* Dynamic click ripple */
+        .click-ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: click-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes click-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphism Card Effect */
+        .glass-card {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Custom Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px;
+            cursor: pointer;
+            background: linear-gradient(90deg, #6366f1 0%, #ec4899 100%);
+            border-radius: 5px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -7px;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.8);
+            border: 2px solid #6366f1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+
+    <header class="w-full py-5 px-6 max-w-7xl mx-auto flex justify-between items-center z-20">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="goToStep1()">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                <i class="fa-solid font-bold fa-video text-white text-lg"></i>
+            </div>
+            <span class="text-2xl font-extrabold bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent tracking-tight">NearCall</span>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <div class="hidden sm:flex items-center px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-medium text-emerald-400">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping mr-2"></span>
+                <span id="active-user-count">1,248</span> Local People Online
+            </div>
+            <button onclick="openPlansModal()" class="px-4 py-2 text-xs font-semibold rounded-xl bg-slate-800/80 hover:bg-slate-700 text-indigo-300 border border-indigo-500/30 transition-all">
+                <i class="fa-solid fa-crown text-yellow-400 mr-1.5"></i> Call Plans
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow flex items-center justify-center p-4 relative z-10 my-auto">
+        
+        <section id="hero-section" class="w-full max-w-3xl text-center py-12 flex flex-col items-center justify-center transition-all duration-500">
+            <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-8">
+                <i class="fa-solid fa-location-dot text-pink-500"></i>
+                <span>Hyper-Local Video Discovery</span>
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-none mb-6">
+                Enjoy live video call with <span class="bg-gradient-to-r from-indigo-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent">ladies 🔥 near you</span>
+            </h1>
+
+            <p class="text-slate-400 text-base sm:text-lg max-w-xl mx-auto mb-14 leading-relaxed font-normal">
+                Connect instantly with verified nearby individuals in real-time. Safe, high-definition, and encrypted video streaming tailored to your current vicinity.
+            </p>
+
+            <!-- ROUND RIPPLE BUTTON -->
+            <div class="ripple-btn-container mb-8">
+                <div class="ripple-ring"></div>
+                <div class="ripple-ring"></div>
+                <div class="ripple-ring"></div>
+                
+                <button onclick="goToStep2(event)" class="relative z-10 w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-lg sm:text-xl shadow-2xl shadow-indigo-600/50 hover:scale-105 active:scale-95 transition-all duration-300 flex flex-col items-center justify-center gap-2 group border-4 border-white/20">
+                    <i class="fa-solid fa-video text-3xl sm:text-4xl group-hover:rotate-12 transition-transform"></i>
+                    <span class="tracking-wider text-xs sm:text-sm font-extrabold uppercase">Find Matches</span>
+                </button>
+            </div>
+
+            <p class="text-xs text-slate-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-emerald-400"></i> 100% Verified Profiles & Safe Connection
+            </p>
+        </section>
+
+        <section id="config-section" class="hidden w-full max-w-xl glass-card rounded-3xl p-6 sm:p-10 shadow-2xl border border-slate-800 transition-all duration-500">
+            
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-indigo-400"></i> Location Settings
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Set your location parameters to find nearby video partners.</p>
+                </div>
+                <button onclick="goToStep1()" class="text-slate-400 hover:text-white text-xs bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Back
+                </button>
+            </div>
+
+            <form id="location-form" onsubmit="handleStartCall(event)" class="space-y-6">
+                <!-- State Selection Dropdown -->
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                        Select State / Union Territory <span class="text-pink-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <select id="state-select" required class="w-full bg-slate-900/90 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 text-white text-sm rounded-xl px-4 py-3.5 outline-none appearance-none cursor-pointer transition-all">
+                            <option value="" disabled selected>-- Choose Indian State / UT --</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pincode Input Field -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                            6-Digit PIN Code <span class="text-pink-500">*</span>
+                        </label>
+                        <span id="pincode-badge" class="hidden text-xs font-bold px-2.5 py-0.5 rounded-full"></span>
+                    </div>
+                    <div class="relative">
+                        <input type="text" id="pincode-input" maxlength="6" placeholder="e.g. 110001 or 400001" required
+                            oninput="validatePincode(this.value)"
+                            class="w-full bg-slate-900/90 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 text-white text-sm rounded-xl px-4 py-3.5 outline-none font-mono tracking-widest transition-all">
+                        <div id="pincode-icon" class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-500">
+                            <i class="fa-solid fa-hashtag text-xs"></i>
+                        </div>
+                    </div>
+                    <p id="pincode-help" class="text-[11px] text-slate-500 mt-1.5">Enter a valid 6-digit Indian Postal PIN code.</p>
+                </div>
+
+                <!-- Radius Range Slider -->
+                <div class="pt-2">
+                    <div class="flex justify-between items-center mb-3">
+                        <label class="text-xs font-semibold uppercase tracking-wider text-slate-300">
+                            Search Radius
+                        </label>
+                        <span class="text-sm font-extrabold text-pink-400 bg-pink-500/10 border border-pink-500/20 px-3 py-1 rounded-full font-mono" id="radius-value-display">
+                            5 km
+                        </span>
+                    </div>
+                    
+                    <input type="range" id="radius-slider" min="3" max="10" step="1" value="5" 
+                        oninput="updateRadiusDisplay(this.value)" class="w-full cursor-pointer">
+                    
+                    <div class="flex justify-between text-[11px] font-medium text-slate-500 mt-2 font-mono">
+                        <span>3 km (Closest)</span>
+                        <span>6 km</span>
+                        <span>10 km (Max Radius)</span>
+                    </div>
+                </div>
+
+                <!-- Start Video Call Button with Ripple Effect -->
+                <div class="pt-6 flex flex-col items-center">
+                    <div class="ripple-btn-container my-4">
+                        <div class="ripple-ring"></div>
+                        <div class="ripple-ring"></div>
+                        <div class="ripple-ring"></div>
+
+                        <button type="submit" id="start-call-btn" class="relative z-10 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-tr from-emerald-500 via-indigo-600 to-pink-600 text-white font-black text-xs sm:text-sm shadow-xl shadow-indigo-500/40 hover:scale-105 active:scale-95 transition-all duration-300 flex flex-col items-center justify-center gap-1.5 border-2 border-white/30 uppercase tracking-wider text-center p-2">
+                            <i class="fa-solid fa-video text-2xl sm:text-3xl"></i>
+                            <span>Start Video Call</span>
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-slate-400 text-center mt-2">
+                        Clicking start will begin local radar scanning in your specified area.
+                    </p>
+                </div>
+            </form>
+        </section>
+
+        <section id="radar-section" class="hidden w-full max-w-4xl relative flex flex-col items-center justify-center py-6">
+            
+            <!-- Radar Header Status -->
+            <div class="glass-card px-6 py-3 rounded-full border border-indigo-500/30 flex items-center space-x-3 mb-6 shadow-xl">
+                <span class="relative flex h-3 w-3">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
+                </span>
+                <span class="text-xs sm:text-sm font-semibold text-slate-200">
+                    Scanning within <span id="radar-radius-label" class="text-pink-400 font-bold">5 km</span> of PIN <span id="radar-pincode-label" class="text-indigo-400 font-mono font-bold">--</span> (<span id="radar-state-label" class="text-slate-300">--</span>)
+                </span>
+                <button onclick="goToStep2()" class="text-xs text-slate-400 hover:text-white underline ml-2">Change</button>
+            </div>
+
+            <!-- Radar Interface Container -->
+            <div id="radar-canvas-container" class="relative w-[320px] h-[320px] sm:w-[480px] sm:h-[480px] md:w-[540px] md:h-[540px] rounded-full border border-indigo-500/20 bg-slate-950/60 shadow-2xl flex items-center justify-center overflow-hidden">
+                
+                <!-- Concentric Distance Rings -->
+                <div class="absolute w-[80%] h-[80%] rounded-full border border-indigo-500/20"></div>
+                <div class="absolute w-[60%] h-[60%] rounded-full border border-indigo-500/15"></div>
+                <div class="absolute w-[40%] h-[40%] rounded-full border border-indigo-500/10"></div>
+                <div class="absolute w-[20%] h-[20%] rounded-full border border-indigo-500/10"></div>
+
+                <!-- Radar Axis Lines -->
+                <div class="absolute w-full h-[1px] bg-indigo-500/10"></div>
+                <div class="absolute h-full w-[1px] bg-indigo-500/10"></div>
+
+                <!-- Radar Rotating Sweep Beam -->
+                <div class="absolute top-0 left-0 w-full h-full animate-radar-sweep origin-center pointer-events-none">
+                    <div class="w-1/2 h-1/2 bg-gradient-to-br from-indigo-500/30 via-pink-500/10 to-transparent origin-bottom-right rounded-tl-full"></div>
+                </div>
+
+                <!-- CENTER CARTOON AVATAR (YOU) -->
+                <div class="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-indigo-400 shadow-xl shadow-indigo-500/50 bg-gradient-to-tr from-indigo-900 to-purple-900 p-1 flex items-center justify-center group cursor-pointer">
+                    <!-- Stylized Vector Cartoon Avatar SVG -->
+                    <div class="w-full h-full rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center overflow-hidden shadow-inner">
+                        <svg class="w-12 h-12 text-white transform translate-y-1" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 12c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z"/>
+                            <circle cx="9" cy="7" r="1" fill="#1e1b4b"/>
+                            <circle cx="15" cy="7" r="1" fill="#1e1b4b"/>
+                            <path d="M10 10c1 1 3 1 4 0" stroke="#1e1b4b" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                        </svg>
+                    </div>
+                    <div class="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center text-[11px] text-white font-extrabold opacity-0 group-hover:opacity-100 transition-opacity">You</div>
+                </div>
+
+                <!-- =============================================================== -->
+                <!-- FLOATING INDIAN FEMALE PROFILES (3 ONLINE, 2 OFFLINE) -->
+                <!-- =============================================================== -->
+                
+                <!-- Person 1 (ONLINE - Ananya Sharma) -->
+                <div onclick="selectProfile('Ananya Sharma', '2.1 km away', true, 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80')" 
+                     class="absolute top-[18%] left-[22%] z-20 cursor-pointer group animate-float-slow">
+                    <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-gradient-to-tr from-emerald-400 to-indigo-500 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80" alt="Ananya Sharma" class="w-full h-full rounded-full object-cover">
+                        <!-- Online Green Status Badge -->
+                        <span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
+                            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                        </span>
+                    </div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-700 px-2 py-0.5 rounded text-[10px] font-medium text-white whitespace-nowrap shadow">
+                        Ananya • <span class="text-emerald-400 font-bold">Online</span>
+                    </div>
+                </div>
+
+                <!-- Person 2 (ONLINE - Riya Kapoor) -->
+                <div onclick="selectProfile('Riya Kapoor', '1.4 km away', true, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80')" 
+                     class="absolute top-[28%] right-[18%] z-20 cursor-pointer group animate-float-delayed">
+                    <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-gradient-to-tr from-emerald-400 to-indigo-500 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Riya Kapoor" class="w-full h-full rounded-full object-cover">
+                        <span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
+                            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                        </span>
+                    </div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-700 px-2 py-0.5 rounded text-[10px] font-medium text-white whitespace-nowrap shadow">
+                        Riya • <span class="text-emerald-400 font-bold">Online</span>
+                    </div>
+                </div>
+
+                <!-- Person 3 (ONLINE - Priya Nair) -->
+                <div onclick="selectProfile('Priya Nair', '3.8 km away', true, 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=200&auto=format&fit=crop&q=80')" 
+                     class="absolute bottom-[20%] left-[28%] z-20 cursor-pointer group animate-float-slow">
+                    <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-gradient-to-tr from-emerald-400 to-indigo-500 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=200&auto=format&fit=crop&q=80" alt="Priya Nair" class="w-full h-full rounded-full object-cover">
+                        <span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
+                            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                        </span>
+                    </div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-700 px-2 py-0.5 rounded text-[10px] font-medium text-white whitespace-nowrap shadow">
+                        Priya • <span class="text-emerald-400 font-bold">Online</span>
+                    </div>
+                </div>
+
+                <!-- Person 4 (OFFLINE - Kavya Patel) -->
+                <div onclick="selectProfile('Kavya Patel', '4.2 km away', false, 'https://images.unsplash.com/photo-1607746882042-944635d10e46?w=200&auto=format&fit=crop&q=80')" 
+                     class="absolute bottom-[22%] right-[22%] z-20 cursor-pointer group opacity-60 hover:opacity-100 transition-opacity">
+                    <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1607746882042-944635d10e46?w=200&auto=format&fit=crop&q=80" alt="Kavya Patel" class="w-full h-full rounded-full object-cover grayscale">
+                        <!-- Offline Grey Badge -->
+                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
+                    </div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
+                        Kavya • <span class="text-slate-400">Offline</span>
+                    </div>
+                </div>
+
+                <!-- Person 5 (OFFLINE - Sneha Reddy) -->
+                <div onclick="selectProfile('Sneha Reddy', '2.9 km away', false, 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80')" 
+                     class="absolute top-[50%] right-[8%] -translate-y-1/2 z-20 cursor-pointer group opacity-60 hover:opacity-100 transition-opacity">
+                    <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80" alt="Sneha Reddy" class="w-full h-full rounded-full object-cover grayscale">
+                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
+                    </div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
+                        Sneha • <span class="text-slate-400">Offline</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <p class="text-xs text-slate-400 mt-6 text-center">
+                <i class="fa-solid fa-hand-pointer text-indigo-400 mr-1 animate-bounce"></i> Click any floating profile bubble above to start a direct call session.
+            </p>
+
+        </section>
+
+    </main>
+
+    <div id="plans-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        
+        <div class="w-full max-w-lg glass-card rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-2xl relative transform scale-95 transition-transform duration-300" id="modal-card">
+            
+            <!-- Close Button -->
+            <button onclick="closePlansModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center border border-slate-700 transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Profile Info Header (Triggered from avatar click) -->
+            <div id="modal-profile-header" class="hidden mb-6 p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center space-x-3">
+                <img id="modal-avatar-img" src="" class="w-12 h-12 rounded-full object-cover border border-indigo-400">
+                <div>
+                    <h4 id="modal-profile-name" class="font-bold text-white text-sm">--</h4>
+                    <p id="modal-profile-dist" class="text-xs text-indigo-300">--</p>
+                </div>
+            </div>
+
+            <div class="text-center mb-6">
+                <span class="text-xs font-bold text-pink-400 uppercase tracking-widest bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">Video Call Pass</span>
+                <h3 class="text-2xl font-black text-white mt-2">Select Duration Plan</h3>
+                <p class="text-xs text-slate-400 mt-1">Choose a pass option to instantly start your HD live video call.</p>
+            </div>
+
+            <!-- PRICING OPTIONS LIST -->
+            <div class="space-y-3.5 mb-6">
+                
+                <!-- OPTION 1: 150 INR -->
+                <div onclick="selectPlan('Option 1', 150, '10 mins', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/150.00?pn=DIGITAL+CALL+TECHNOLOGIES')" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-indigo-400 font-bold">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-white">Option 1</div>
+                            <div class="text-xs text-slate-400">10 Minutes Live Call</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xl font-black text-white">₹150</div>
+                        <span class="text-[10px] text-slate-400 font-medium">Standard</span>
+                    </div>
+                </div>
+
+                <!-- OPTION 2: 250 INR -->
+                <div onclick="selectPlan('Option 2', 250, '20 mins', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/250.00?pn=DIGITAL+CALL+TECHNOLOGIES')" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-white">Option 2</div>
+                            <div class="text-xs text-slate-400">20 Minutes Live Call</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xl font-black text-white">₹250</div>
+                        <span class="text-[10px] text-purple-400 font-semibold">Popular</span>
+                    </div>
+                </div>
+
+                <!-- OPTION 3: 400 INR (LOCATION REVEAL) -->
+                <div onclick="selectPlan('Option 3', 400, '25 mins + Location in Google Maps', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/400.00?pn=DIGITAL+CALL+TECHNOLOGIES')" class="plan-card relative cursor-pointer border-2 border-pink-500/80 bg-gradient-to-r from-pink-950/30 via-slate-900 to-indigo-950/30 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02] shadow-lg shadow-pink-500/10">
+                    <span class="absolute -top-3 right-4 bg-gradient-to-r from-pink-500 to-indigo-500 text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow">
+                        RECOMMENDED
+                    </span>
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-pink-500/20 border border-pink-500/40 flex items-center justify-center text-pink-400 font-bold">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-white flex items-center gap-1.5">
+                                Option 3 <i class="fa-solid fa-crown text-yellow-400 text-xs"></i>
+                            </div>
+                            <div class="text-xs text-pink-300 font-medium">25 Mins + Location in Google Maps</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xl font-black text-pink-400">₹400</div>
+                        <span class="text-[10px] text-emerald-400 font-bold">Full Access</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Action Buttons -->
+            <button id="pay-confirm-btn" onclick="executePaymentSim()" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-95 text-white font-extrabold text-sm shadow-xl shadow-indigo-500/30 transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-lock"></i>
+                <span id="pay-btn-text">Select Option to Proceed</span>
+            </button>
+
+            <p class="text-[10px] text-center text-slate-500 mt-3">
+                Secure end-to-end encrypted connection. Zero hidden fees.
+            </p>
+        </div>
+    </div>
+
+    <footer class="w-full py-4 text-center text-xs text-slate-500 border-t border-slate-900/60 relative z-10">
+        <p>&copy; 2026 NearCall Video Inc. All rights reserved. • Indian Regional Discovery Network</p>
+    </footer>
+
+    <script>
+        // Full list of Indian States and Union Territories
+        const indianStates = [
+            "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
+            "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa",
+            "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka",
+            "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur",
+            "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab",
+            "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh",
+            "Uttarakhand", "West Bengal"
+        ];
+
+        let selectedState = "";
+        let selectedPincode = "";
+        let selectedRadius = "5";
+        let chosenPlanData = null;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const stateSelect = document.getElementById("state-select");
+            indianStates.forEach(state => {
+                const opt = document.createElement("option");
+                opt.value = state;
+                opt.textContent = state;
+                stateSelect.appendChild(opt);
+            });
+
+            // Handle Ripple Click Effects
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('button')) {
+                    const btn = e.target.closest('button');
+                    const circle = document.createElement('span');
+                    const diameter = Math.max(btn.clientWidth, btn.clientHeight);
+                    const radius = diameter / 2;
+                    const rect = btn.getBoundingClientRect();
+
+                    circle.style.width = circle.style.height = `${diameter}px`;
+                    circle.style.left = `${e.clientX - rect.left - radius}px`;
+                    circle.style.top = `${e.clientY - rect.top - radius}px`;
+                    circle.classList.add('click-ripple');
+
+                    const ripple = btn.getElementsByClassName('click-ripple')[0];
+                    if (ripple) {
+                        ripple.remove();
+                    }
+                    btn.appendChild(circle);
+                }
+            });
+        });
+
+        function goToStep2(e) {
+            document.getElementById("hero-section").classList.add("hidden");
+            document.getElementById("config-section").classList.remove("hidden");
+            document.getElementById("radar-section").classList.add("hidden");
+        }
+
+        function goToStep1() {
+            document.getElementById("hero-section").classList.remove("hidden");
+            document.getElementById("config-section").classList.add("hidden");
+            document.getElementById("radar-section").classList.add("hidden");
+        }
+
+        function validatePincode(val) {
+            const badge = document.getElementById("pincode-badge");
+            const icon = document.getElementById("pincode-icon");
+            const help = document.getElementById("pincode-help");
+            const isNumeric = /^\d{6}$/.test(val);
+
+            badge.classList.remove("hidden", "bg-emerald-500/20", "text-emerald-400", "bg-rose-500/20", "text-rose-400");
+
+            if (val.length === 0) {
+                badge.classList.add("hidden");
+                icon.innerHTML = '<i class="fa-solid fa-hashtag text-xs"></i>';
+                help.textContent = "Enter a valid 6-digit Indian Postal PIN code.";
+                help.className = "text-[11px] text-slate-500 mt-1.5";
+                return false;
+            }
+
+            if (isNumeric) {
+                badge.textContent = "Valid ✓";
+                badge.classList.add("bg-emerald-500/20", "text-emerald-400", "border", "border-emerald-500/30");
+                icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>';
+                help.textContent = "Valid PIN code location verified.";
+                help.className = "text-[11px] text-emerald-400 mt-1.5 font-medium";
+                selectedPincode = val;
+                return true;
+            } else {
+                badge.textContent = "Invalid ✗";
+                badge.classList.add("bg-rose-500/20", "text-rose-400", "border", "border-rose-500/30");
+                icon.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-400 text-sm"></i>';
+                help.textContent = "Please enter exactly 6 numeric digits.";
+                help.className = "text-[11px] text-rose-400 mt-1.5 font-medium";
+                return false;
+            }
+        }
+
+        function updateRadiusDisplay(val) {
+            selectedRadius = val;
+            document.getElementById("radius-value-display").textContent = `${val} km`;
+        }
+
+        function handleStartCall(e) {
+            e.preventDefault();
+            const stateVal = document.getElementById("state-select").value;
+            const pinVal = document.getElementById("pincode-input").value;
+
+            if (!stateVal) {
+                alert("Please select your state or Union Territory.");
+                return;
+            }
+
+            if (!/^\d{6}$/.test(pinVal)) {
+                alert("Please provide a valid 6-digit PIN code.");
+                return;
+            }
+
+            selectedState = stateVal;
+            selectedPincode = pinVal;
+
+            document.getElementById("radar-radius-label").textContent = `${selectedRadius} km`;
+            document.getElementById("radar-pincode-label").textContent = selectedPincode;
+            document.getElementById("radar-state-label").textContent = selectedState;
+
+            document.getElementById("config-section").classList.add("hidden");
+            document.getElementById("radar-section").classList.remove("hidden");
+        }
+
+        function selectProfile(name, distance, isOnline, avatarUrl) {
+            const header = document.getElementById("modal-profile-header");
+            header.classList.remove("hidden");
+            
+            document.getElementById("modal-avatar-img").src = avatarUrl;
+            document.getElementById("modal-profile-name").textContent = name;
+            document.getElementById("modal-profile-dist").textContent = `${distance} • ${isOnline ? 'Online Now' : 'Offline'}`;
+            
+            openPlansModal();
+        }
+
+        function openPlansModal() {
+            const modal = document.getElementById("plans-modal");
+            const card = document.getElementById("modal-card");
+            modal.classList.remove("pointer-events-none", "opacity-0");
+            card.classList.remove("scale-95");
+            card.classList.add("scale-100");
+        }
+
+        function closePlansModal() {
+            const modal = document.getElementById("plans-modal");
+            const card = document.getElementById("modal-card");
+            modal.classList.add("pointer-events-none", "opacity-0");
+            card.classList.remove("scale-100");
+            card.classList.add("scale-95");
+        }
+
+        function selectPlan(optionTitle, price, details, payUrl) {
+            chosenPlanData = { optionTitle, price, details, payUrl };
+            
+            document.querySelectorAll(".plan-card").forEach(el => {
+                el.classList.remove("ring-2", "ring-indigo-500");
+            });
+            event.currentTarget.classList.add("ring-2", "ring-indigo-500");
+
+            const payBtnText = document.getElementById("pay-btn-text");
+            payBtnText.textContent = `Pay ₹${price} for ${details}`;
+        }
+
+        function executePaymentSim() {
+            if (!chosenPlanData) {
+                alert("Please select one of the options (Option 1, 2, or 3) to continue.");
+                return;
+            }
+
+            if (chosenPlanData.payUrl) {
+                window.location.href = chosenPlanData.payUrl;
+            }
+        }
+    </script>
+</body>
+</html>
