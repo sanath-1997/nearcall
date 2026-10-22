@@ -123,33 +123,6 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-
-        /* Custom Range Slider Styling */
-        input[type=range] {
-            -webkit-appearance: none;
-            background: transparent;
-        }
-        input[type=range]:focus {
-            outline: none;
-        }
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 10px;
-            cursor: pointer;
-            background: linear-gradient(90deg, #6366f1 0%, #ec4899 100%);
-            border-radius: 5px;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            height: 24px;
-            width: 24px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-            -webkit-appearance: none;
-            margin-top: -7px;
-            box-shadow: 0 0 15px rgba(236, 72, 153, 0.8);
-            border: 2px solid #6366f1;
-        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
@@ -214,7 +187,7 @@
                     <h2 class="text-2xl font-bold text-white flex items-center gap-2">
                         <i class="fa-solid fa-sliders text-indigo-400"></i> Location Settings
                     </h2>
-                    <p class="text-xs text-slate-400 mt-1">Set your location parameters to find nearby video partners.</p>
+                    <p class="text-xs text-slate-400 mt-1">Select your city and area to find nearby video partners.</p>
                 </div>
                 <button onclick="goToStep1()" class="text-slate-400 hover:text-white text-xs bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
                     <i class="fa-solid fa-arrow-left mr-1"></i> Back
@@ -222,14 +195,14 @@
             </div>
 
             <form id="location-form" onsubmit="handleStartCall(event)" class="space-y-6">
-                <!-- State Selection Dropdown -->
+                <!-- City Selection Dropdown -->
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-                        Select State / Union Territory <span class="text-pink-500">*</span>
+                        Select City <span class="text-pink-500">*</span>
                     </label>
                     <div class="relative">
-                        <select id="state-select" required class="w-full bg-slate-900/90 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 text-white text-sm rounded-xl px-4 py-3.5 outline-none appearance-none cursor-pointer transition-all">
-                            <option value="" disabled selected>-- Choose Indian State / UT --</option>
+                        <select id="city-select" required onchange="handleCityChange(this.value)" class="w-full bg-slate-900/90 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 text-white text-sm rounded-xl px-4 py-3.5 outline-none appearance-none cursor-pointer transition-all">
+                            <option value="" disabled selected>-- Choose City --</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
                             <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -237,44 +210,20 @@
                     </div>
                 </div>
 
-                <!-- Pincode Input Field -->
+                <!-- Area Selection Dropdown -->
                 <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                            6-Digit PIN Code <span class="text-pink-500">*</span>
-                        </label>
-                        <span id="pincode-badge" class="hidden text-xs font-bold px-2.5 py-0.5 rounded-full"></span>
-                    </div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                        Select Area <span class="text-pink-500">*</span>
+                    </label>
                     <div class="relative">
-                        <input type="text" id="pincode-input" maxlength="6" placeholder="e.g. 110001 or 400001" required
-                            oninput="validatePincode(this.value)"
-                            class="w-full bg-slate-900/90 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 text-white text-sm rounded-xl px-4 py-3.5 outline-none font-mono tracking-widest transition-all">
-                        <div id="pincode-icon" class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-500">
-                            <i class="fa-solid fa-hashtag text-xs"></i>
+                        <select id="area-select" required disabled class="w-full bg-slate-900/90 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 text-white text-sm rounded-xl px-4 py-3.5 outline-none appearance-none cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                            <option value="" disabled selected>-- Choose City First --</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
                         </div>
                     </div>
-                    <p id="pincode-help" class="text-[11px] text-slate-500 mt-1.5">Enter a valid 6-digit Indian Postal PIN code.</p>
-                </div>
-
-                <!-- Radius Range Slider -->
-                <div class="pt-2">
-                    <div class="flex justify-between items-center mb-3">
-                        <label class="text-xs font-semibold uppercase tracking-wider text-slate-300">
-                            Search Radius
-                        </label>
-                        <span class="text-sm font-extrabold text-pink-400 bg-pink-500/10 border border-pink-500/20 px-3 py-1 rounded-full font-mono" id="radius-value-display">
-                            5 km
-                        </span>
-                    </div>
-                    
-                    <input type="range" id="radius-slider" min="3" max="10" step="1" value="5" 
-                        oninput="updateRadiusDisplay(this.value)" class="w-full cursor-pointer">
-                    
-                    <div class="flex justify-between text-[11px] font-medium text-slate-500 mt-2 font-mono">
-                        <span>3 km (Closest)</span>
-                        <span>6 km</span>
-                        <span>10 km (Max Radius)</span>
-                    </div>
+                    <p id="area-help" class="text-[11px] text-slate-500 mt-1.5">Area selection is locked until a city is chosen.</p>
                 </div>
 
                 <!-- Start Video Call Button with Ripple Effect -->
@@ -305,7 +254,7 @@
                   <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
                 </span>
                 <span class="text-xs sm:text-sm font-semibold text-slate-200">
-                    Scanning within <span id="radar-radius-label" class="text-pink-400 font-bold">5 km</span> of PIN <span id="radar-pincode-label" class="text-indigo-400 font-mono font-bold">--</span> (<span id="radar-state-label" class="text-slate-300">--</span>)
+                    Scanning within Area: <span id="radar-area-label" class="text-pink-400 font-bold">--</span> (<span id="radar-city-label" class="text-indigo-400 font-bold">--</span>)
                 </span>
                 <button onclick="goToStep2()" class="text-xs text-slate-400 hover:text-white underline ml-2">Change</button>
             </div>
@@ -474,8 +423,8 @@
             <!-- PRICING OPTIONS LIST -->
             <div class="space-y-3.5 mb-6">
                 
-                <!-- OPTION 1: 150 INR -->
-                <div onclick="selectPlan('Option 1', 150, '10 mins', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/150.00?pn=DIGITAL+CALL+TECHNOLOGIES', event)" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
+                <!-- OPTION 1: 90 INR (discounted from 150) -->
+                <div onclick="selectPlan('Option 1', 90, '10 mins', 'https://rzp.io/rzp/Ct5X22Pw', event)" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
                     <div class="flex items-center space-x-3.5">
                         <div class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-indigo-400 font-bold">
                             <i class="fa-solid fa-clock"></i>
@@ -486,13 +435,16 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-xl font-black text-white">₹150</div>
-                        <span class="text-[10px] text-slate-400 font-medium">Standard</span>
+                        <div class="text-xl font-black text-white flex items-center gap-2 justify-end">
+                            <span class="text-xs text-slate-500 line-through font-normal">₹150</span>
+                            <span>₹90</span>
+                        </div>
+                        <span class="text-[10px] text-emerald-400 font-medium">Special Discount</span>
                     </div>
                 </div>
 
-                <!-- OPTION 2: 250 INR -->
-                <div onclick="selectPlan('Option 2', 250, '20 mins', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/250.00?pn=DIGITAL+CALL+TECHNOLOGIES', event)" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
+                <!-- OPTION 2: 150 INR -->
+                <div onclick="selectPlan('Option 2', 150, '20 mins', 'https://rzp.io/rzp/SEejceU2', event)" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
                     <div class="flex items-center space-x-3.5">
                         <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold">
                             <i class="fa-solid fa-hourglass-half"></i>
@@ -503,13 +455,13 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-xl font-black text-white">₹250</div>
+                        <div class="text-xl font-black text-white">₹150</div>
                         <span class="text-[10px] text-purple-400 font-semibold">Popular</span>
                     </div>
                 </div>
 
                 <!-- OPTION 3: 400 INR (LOCATION REVEAL) -->
-                <div onclick="selectPlan('Option 3', 400, '25 mins + Location Reveal', 'https://upi.pe/sanathselvakumaran-1@okhdfcbank/400.00?pn=DIGITAL+CALL+TECHNOLOGIES', event)" class="plan-card relative cursor-pointer border-2 border-pink-500/80 bg-gradient-to-r from-pink-950/30 via-slate-900 to-indigo-950/30 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02] shadow-lg shadow-pink-500/10">
+                <div onclick="selectPlan('Option 3', 400, '25 mins + Location Reveal', 'https://rzp.io/rzp/O6MkuQ3f', event)" class="plan-card relative cursor-pointer border-2 border-pink-500/80 bg-gradient-to-r from-pink-950/30 via-slate-900 to-indigo-950/30 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02] shadow-lg shadow-pink-500/10">
                     <span class="absolute -top-3 right-4 bg-gradient-to-r from-pink-500 to-indigo-500 text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow">
                         RECOMMENDED
                     </span>
@@ -549,29 +501,51 @@
     </footer>
 
     <script>
-        const indianStates = [
-            "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
-            "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa",
-            "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka",
-            "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur",
-            "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab",
-            "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh",
-            "Uttarakhand", "West Bengal"
-        ];
+        const cityAreasData = {
+            "Bengaluru": [
+                "Koramangala", "Indiranagar", "Jayanagar", "HSR Layout", "Whitefield", 
+                "Electronic City", "JP Nagar", "Marathahalli", "BTM Layout", "Hebbal", 
+                "Banashankari", "Yelahanka", "Malleshwaram", "Basavanagudi", "Ulsoor"
+            ],
+            "Hyderabad": [
+                "Banjara Hills", "Jubilee Hills", "Gachibowli", "Hitec City", "Madhapur", 
+                "Kukatpally", "Secunderabad", "Ameerpet", "Begumpet", "Kachiguda", 
+                "Dilsukhnagar", "LB Nagar", "Miyapur", "Tolichowki", "Mehdipatnam"
+            ],
+            "Mumbai": [
+                "Andheri", "Bandra", "Juhu", "Colaba", "Dadar", 
+                "Borivali", "Malad", "Goregaon", "Powai", "Ghatkopar", 
+                "Thane", "Kurla", "Worli", "Lower Parel", "Santacruz"
+            ],
+            "Chennai": [
+                "T. Nagar", "Adyar", "Anna Nagar", "Mylapore", "Velachery", 
+                "Nungambakkam", "Besant Nagar", "Kilpauk", "Tambaram", "OMR", 
+                "Porur", "Guindy", "Royapettah", "Alwarpet", "Kodambakkam"
+            ],
+            "Kochi": [
+                "Kadavanthra", "Kaloor", "Edappally", "Fort Kochi", "Panampilly Nagar", 
+                "Vyttila", "Marine Drive", "Palarivattom", "Varappuzha", "Thrippunithura", 
+                "Aluva", "Angamaly", "Kakkanad", "Thevara", "Mattancherry"
+            ],
+            "Kolkata": [
+                "Park Street", "Salt Lake", "New Town", "Ballygunge", "Dum Dum", 
+                "Behala", "Garia", "Jadavpur", "Tollygunge", "Shyambazar", 
+                "Alipore", "Baranagar", "Lake Town", "Rajarhat", "Howrah"
+            ]
+        };
 
-        let selectedState = "";
-        let selectedPincode = "";
-        let selectedRadius = "5";
+        let selectedCity = "";
+        let selectedArea = "";
         let chosenPlanData = null;
         let timeoutTimer = null;
 
         document.addEventListener("DOMContentLoaded", () => {
-            const stateSelect = document.getElementById("state-select");
-            indianStates.forEach(state => {
+            const citySelect = document.getElementById("city-select");
+            Object.keys(cityAreasData).forEach(city => {
                 const opt = document.createElement("option");
-                opt.value = state;
-                opt.textContent = state;
-                stateSelect.appendChild(opt);
+                opt.value = city;
+                opt.textContent = city;
+                citySelect.appendChild(opt);
             });
 
             document.addEventListener('click', function(e) {
@@ -608,66 +582,50 @@
             document.getElementById("radar-section").classList.add("hidden");
         }
 
-        function validatePincode(val) {
-            const badge = document.getElementById("pincode-badge");
-            const icon = document.getElementById("pincode-icon");
-            const help = document.getElementById("pincode-help");
-            const isNumeric = /^\d{6}$/.test(val);
+        function handleCityChange(city) {
+            selectedCity = city;
+            const areaSelect = document.getElementById("area-select");
+            const areaHelp = document.getElementById("area-help");
 
-            badge.classList.remove("hidden", "bg-emerald-500/20", "text-emerald-400", "bg-rose-500/20", "text-rose-400");
-
-            if (val.length === 0) {
-                badge.classList.add("hidden");
-                icon.innerHTML = '<i class="fa-solid fa-hashtag text-xs"></i>';
-                help.textContent = "Enter a valid 6-digit Indian Postal PIN code.";
-                help.className = "text-[11px] text-slate-500 mt-1.5";
-                return false;
-            }
-
-            if (isNumeric) {
-                badge.textContent = "Valid ✓";
-                badge.classList.add("bg-emerald-500/20", "text-emerald-400", "border", "border-emerald-500/30");
-                icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>';
-                help.textContent = "Valid PIN code location verified.";
-                help.className = "text-[11px] text-emerald-400 mt-1.5 font-medium";
-                selectedPincode = val;
-                return true;
+            areaSelect.innerHTML = '<option value="" disabled selected>-- Choose Area --</option>';
+            
+            if (city && cityAreasData[city]) {
+                cityAreasData[city].forEach(area => {
+                    const opt = document.createElement("option");
+                    opt.value = area;
+                    opt.textContent = area;
+                    areaSelect.appendChild(opt);
+                });
+                areaSelect.removeAttribute("disabled");
+                areaHelp.textContent = `Select an area in ${city}.`;
+                areaHelp.className = "text-[11px] text-emerald-400 mt-1.5 font-medium";
             } else {
-                badge.textContent = "Invalid ✗";
-                badge.classList.add("bg-rose-500/20", "text-rose-400", "border", "border-rose-500/30");
-                icon.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-400 text-sm"></i>';
-                help.textContent = "Please enter exactly 6 numeric digits.";
-                help.className = "text-[11px] text-rose-400 mt-1.5 font-medium";
-                return false;
+                areaSelect.setAttribute("disabled", "true");
+                areaHelp.textContent = "Area selection is locked until a city is chosen.";
+                areaHelp.className = "text-[11px] text-slate-500 mt-1.5";
             }
-        }
-
-        function updateRadiusDisplay(val) {
-            selectedRadius = val;
-            document.getElementById("radius-value-display").textContent = `${val} km`;
         }
 
         function handleStartCall(e) {
             e.preventDefault();
-            const stateVal = document.getElementById("state-select").value;
-            const pinVal = document.getElementById("pincode-input").value;
+            const cityVal = document.getElementById("city-select").value;
+            const areaVal = document.getElementById("area-select").value;
 
-            if (!stateVal) {
-                alert("Please select your state or Union Territory.");
+            if (!cityVal) {
+                alert("Please select your city.");
                 return;
             }
 
-            if (!/^\d{6}$/.test(pinVal)) {
-                alert("Please provide a valid 6-digit PIN code.");
+            if (!areaVal) {
+                alert("Please select your area.");
                 return;
             }
 
-            selectedState = stateVal;
-            selectedPincode = pinVal;
+            selectedCity = cityVal;
+            selectedArea = areaVal;
 
-            document.getElementById("radar-radius-label").textContent = `${selectedRadius} km`;
-            document.getElementById("radar-pincode-label").textContent = selectedPincode;
-            document.getElementById("radar-state-label").textContent = selectedState;
+            document.getElementById("radar-area-label").textContent = selectedArea;
+            document.getElementById("radar-city-label").textContent = selectedCity;
 
             document.getElementById("config-section").classList.add("hidden");
             document.getElementById("radar-section").classList.remove("hidden");
