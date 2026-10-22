@@ -149,17 +149,31 @@
     <!-- MAIN CONTAINER -->
     <main class="flex-grow flex items-center justify-center p-4 relative z-10 my-auto">
         
-        <section id="hero-section" class="w-full max-w-3xl text-center py-12 flex flex-col items-center justify-center transition-all duration-500">
-            <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-8">
+        <section id="hero-section" class="w-full max-w-3xl text-center py-8 flex flex-col items-center justify-center transition-all duration-500">
+            <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-4">
                 <i class="fa-solid fa-location-dot text-pink-500"></i>
                 <span>Hyper-Local Video Discovery</span>
             </div>
 
-            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-none mb-6">
+            <!-- MEDIUM-SMALL IMAGE JUST BELOW 'Hyper Local Discovery' -->
+            <div class="mb-6 w-full max-w-md sm:max-w-lg rounded-2xl overflow-hidden shadow-2xl border border-indigo-500/30 p-1 bg-gradient-to-r from-indigo-500/20 via-pink-500/20 to-purple-500/20">
+                <a href="https://unsplash.com/s/photos/hot-women" target="_blank" class="block relative overflow-hidden rounded-xl group">
+                    <img src="https://images.unsplash.com/photo-1568819317551-31051b37f69f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" 
+                         alt="Featured Discovery" 
+                         class="w-full h-48 sm:h-56 object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end justify-center pb-3">
+                        <span class="text-xs text-slate-200 font-semibold bg-slate-950/70 px-3 py-1 rounded-full border border-slate-700/60 backdrop-blur-sm">
+                            <i class="fa-solid fa-fire text-pink-500 mr-1"></i> Nearby Profiles Active Now
+                        </span>
+                    </div>
+                </a>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none mb-6">
                 Enjoy live video call with <span class="bg-gradient-to-r from-indigo-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent">ladies 🔥 near you</span>
             </h1>
 
-            <p class="text-slate-400 text-base sm:text-lg max-w-xl mx-auto mb-14 leading-relaxed font-normal">
+            <p class="text-slate-400 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed font-normal">
                 Connect instantly with verified nearby individuals in real-time. Safe, high-definition, and encrypted video streaming tailored to your current vicinity.
             </p>
 
@@ -260,7 +274,7 @@
             </div>
 
             <!-- Radar Interface Container -->
-            <div id="radar-canvas-container" class="relative w-[320px] h-[320px] sm:w-[480px] sm:h-[480px] md:w-[540px] md:h-[540px] rounded-full border border-indigo-500/20 bg-slate-950/60 shadow-2xl flex items-center justify-center overflow-hidden">
+            <div id="radar-canvas-container" class="relative w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[580px] md:h-[580px] rounded-full border border-indigo-500/20 bg-slate-950/60 shadow-2xl flex items-center justify-center overflow-hidden">
                 
                 <!-- Concentric Distance Rings -->
                 <div class="absolute w-[80%] h-[80%] rounded-full border border-indigo-500/20"></div>
@@ -279,7 +293,6 @@
 
                 <!-- CENTER CARTOON AVATAR (YOU) -->
                 <div class="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-indigo-400 shadow-xl shadow-indigo-500/50 bg-gradient-to-tr from-indigo-900 to-purple-900 p-1 flex items-center justify-center group cursor-pointer">
-                    <!-- Stylized Vector Cartoon Avatar SVG -->
                     <div class="w-full h-full rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center overflow-hidden shadow-inner">
                         <svg class="w-12 h-12 text-white transform translate-y-1" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 12c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z"/>
@@ -291,71 +304,111 @@
                     <div class="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center text-[11px] text-white font-extrabold opacity-0 group-hover:opacity-100 transition-opacity">You</div>
                 </div>
 
-                <!-- FLOATING INDIAN FEMALE PROFILES -->
-                
+                <!-- PROFILES - PROMINENT, BIG & VISIBLE WITH PROVIDED INDIAN PROFILE URLS -->
+
                 <!-- Person 1 (ONLINE - Ananya Sharma) -->
-                <div onclick="selectProfile('Ananya Sharma', '2.1 km away', true, 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80')" 
-                     class="absolute top-[18%] left-[22%] z-20 cursor-pointer group animate-float-slow">
-                    <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-gradient-to-tr from-emerald-400 to-indigo-500 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80" alt="Ananya Sharma" class="w-full h-full rounded-full object-cover">
-                        <span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
-                            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                <div onclick="selectProfile('Ananya Sharma', '1.2 km away', true, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeiipEFUJO2s4zwlnnJ0cFp_jKyK_m6H3OpuKdGUUtCXCVaqLKWjWg3Q4g&s=10')" 
+                     class="absolute top-[12%] left-[18%] z-20 cursor-pointer group animate-float-slow">
+                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-emerald-400 via-pink-500 to-indigo-500 shadow-xl shadow-emerald-500/40 group-hover:scale-115 transition-all duration-300">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeiipEFUJO2s4zwlnnJ0cFp_jKyK_m6H3OpuKdGUUtCXCVaqLKWjWg3Q4g&s=10" alt="Ananya Sharma" class="w-full h-full rounded-full object-cover border-2 border-slate-900">
+                        <span class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
+                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                         </span>
                     </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-700 px-2 py-0.5 rounded text-[10px] font-medium text-white whitespace-nowrap shadow">
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/95 border border-slate-700 px-2.5 py-1 rounded-lg text-xs font-semibold text-white whitespace-nowrap shadow-xl">
                         Ananya • <span class="text-emerald-400 font-bold">Online</span>
                     </div>
                 </div>
 
-                <!-- Person 2 (ONLINE - Riya Kapoor) -->
-                <div onclick="selectProfile('Riya Kapoor', '1.4 km away', true, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80')" 
-                     class="absolute top-[28%] right-[18%] z-20 cursor-pointer group animate-float-delayed">
-                    <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-gradient-to-tr from-emerald-400 to-indigo-500 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Riya Kapoor" class="w-full h-full rounded-full object-cover">
-                        <span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
-                            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                <!-- Person 2 (ONLINE - Priya Patel) -->
+                <div onclick="selectProfile('Priya Patel', '0.8 km away', true, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSNVy-yqSJr4-blukYZWkYEPSzyYNLRAX37CvJabw2DKzkvnr0uJtw2h4&s=10')" 
+                     class="absolute top-[22%] right-[14%] z-20 cursor-pointer group animate-float-delayed">
+                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-emerald-400 via-pink-500 to-indigo-500 shadow-xl shadow-emerald-500/40 group-hover:scale-115 transition-all duration-300">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSNVy-yqSJr4-blukYZWkYEPSzyYNLRAX37CvJabw2DKzkvnr0uJtw2h4&s=10" alt="Priya Patel" class="w-full h-full rounded-full object-cover border-2 border-slate-900">
+                        <span class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
+                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                         </span>
                     </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-700 px-2 py-0.5 rounded text-[10px] font-medium text-white whitespace-nowrap shadow">
-                        Riya • <span class="text-emerald-400 font-bold">Online</span>
-                    </div>
-                </div>
-
-                <!-- Person 3 (ONLINE - Priya Nair) -->
-                <div onclick="selectProfile('Priya Nair', '3.8 km away', true, 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=200&auto=format&fit=crop&q=80')" 
-                     class="absolute bottom-[20%] left-[28%] z-20 cursor-pointer group animate-float-slow">
-                    <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-gradient-to-tr from-emerald-400 to-indigo-500 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                        <img src="https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=200&auto=format&fit=crop&q=80" alt="Priya Nair" class="w-full h-full rounded-full object-cover">
-                        <span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
-                            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                        </span>
-                    </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-700 px-2 py-0.5 rounded text-[10px] font-medium text-white whitespace-nowrap shadow">
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/95 border border-slate-700 px-2.5 py-1 rounded-lg text-xs font-semibold text-white whitespace-nowrap shadow-xl">
                         Priya • <span class="text-emerald-400 font-bold">Online</span>
                     </div>
                 </div>
 
-                <!-- Person 4 (OFFLINE - Kavya Patel) -->
-                <div onclick="selectProfile('Kavya Patel', '4.2 km away', false, 'https://images.unsplash.com/photo-1607746882042-944635d10e46?w=200&auto=format&fit=crop&q=80')" 
-                     class="absolute bottom-[22%] right-[22%] z-20 cursor-pointer group opacity-60 hover:opacity-100 transition-opacity">
-                    <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
-                        <img src="https://images.unsplash.com/photo-1607746882042-944635d10e46?w=200&auto=format&fit=crop&q=80" alt="Kavya Patel" class="w-full h-full rounded-full object-cover grayscale">
-                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
+                <!-- Person 3 (ONLINE - Riya Verma) -->
+                <div onclick="selectProfile('Riya Verma', '2.5 km away', true, 'https://live.staticflickr.com/424/31933277831_03f67d44cb_z.jpg')" 
+                     class="absolute bottom-[16%] left-[22%] z-20 cursor-pointer group animate-float-slow">
+                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-emerald-400 via-pink-500 to-indigo-500 shadow-xl shadow-emerald-500/40 group-hover:scale-115 transition-all duration-300">
+                        <img src="https://live.staticflickr.com/424/31933277831_03f67d44cb_z.jpg" alt="Riya Verma" class="w-full h-full rounded-full object-cover border-2 border-slate-900">
+                        <span class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
+                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                        </span>
                     </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
-                        Kavya • <span class="text-slate-400">Offline</span>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/95 border border-slate-700 px-2.5 py-1 rounded-lg text-xs font-semibold text-white whitespace-nowrap shadow-xl">
+                        Riya • <span class="text-emerald-400 font-bold">Online</span>
                     </div>
                 </div>
 
-                <!-- Person 5 (OFFLINE - Sneha Reddy) -->
-                <div onclick="selectProfile('Sneha Reddy', '2.9 km away', false, 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80')" 
-                     class="absolute top-[50%] right-[8%] -translate-y-1/2 z-20 cursor-pointer group opacity-60 hover:opacity-100 transition-opacity">
+                <!-- Person 4 (ONLINE - Sunita Kaur) -->
+                <div onclick="selectProfile('Sunita Kaur', '1.9 km away', true, 'https://images.pexels.com/photos/28316359/pexels-photo-28316359.jpeg?cs=srgb&dl=pexels-stardustmultimedia-28316359.jpg&fm=jpg')" 
+                     class="absolute bottom-[18%] right-[16%] z-20 cursor-pointer group animate-float-delayed">
+                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-emerald-400 via-pink-500 to-indigo-500 shadow-xl shadow-emerald-500/40 group-hover:scale-115 transition-all duration-300">
+                        <img src="https://images.pexels.com/photos/28316359/pexels-photo-28316359.jpeg?cs=srgb&dl=pexels-stardustmultimedia-28316359.jpg&fm=jpg" alt="Sunita Kaur" class="w-full h-full rounded-full object-cover border-2 border-slate-900">
+                        <span class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
+                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                        </span>
+                    </div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/95 border border-slate-700 px-2.5 py-1 rounded-lg text-xs font-semibold text-white whitespace-nowrap shadow-xl">
+                        Sunita • <span class="text-emerald-400 font-bold">Online</span>
+                    </div>
+                </div>
+
+                <!-- INACTIVE / OFFLINE PROFILES (SIMILAR STYLED INDIAN AVATARS) -->
+                
+                <!-- Inactive Person 1 (Kavya - Offline) -->
+                <div onclick="selectProfile('Kavya Reddy', '3.4 km away', false, 'https://images.unsplash.com/photo-1607746882042-944635d10e46?w=200&auto=format&fit=crop&q=80')" 
+                     class="absolute top-[42%] left-[6%] z-20 cursor-pointer group opacity-65 hover:opacity-100 transition-opacity">
                     <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80" alt="Sneha Reddy" class="w-full h-full rounded-full object-cover grayscale">
+                        <img src="https://images.unsplash.com/photo-1607746882042-944635d10e46?w=200&auto=format&fit=crop&q=80" alt="Kavya Reddy" class="w-full h-full rounded-full object-cover grayscale">
                         <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
                     </div>
                     <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
-                        Sneha • <span class="text-slate-400">Offline</span>
+                        Kavya • Offline
+                    </div>
+                </div>
+
+                <!-- Inactive Person 2 (Sneha - Offline) -->
+                <div onclick="selectProfile('Sneha Rao', '2.9 km away', false, 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80')" 
+                     class="absolute top-[48%] right-[6%] z-20 cursor-pointer group opacity-65 hover:opacity-100 transition-opacity">
+                    <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80" alt="Sneha Rao" class="w-full h-full rounded-full object-cover grayscale">
+                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
+                    </div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
+                        Sneha • Offline
+                    </div>
+                </div>
+
+                <!-- Inactive Person 3 (Meera - Offline) -->
+                <div onclick="selectProfile('Meera Joshi', '4.1 km away', false, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80')" 
+                     class="absolute top-[5%] left-[45%] -translate-x-1/2 z-20 cursor-pointer group opacity-65 hover:opacity-100 transition-opacity">
+                    <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Meera Joshi" class="w-full h-full rounded-full object-cover grayscale">
+                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
+                    </div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
+                        Meera • Offline
+                    </div>
+                </div>
+
+                <!-- Inactive Person 4 (Aarti - Offline) -->
+                <div onclick="selectProfile('Aarti Singh', '5.0 km away', false, 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80')" 
+                     class="absolute bottom-[4%] left-[48%] -translate-x-1/2 z-20 cursor-pointer group opacity-65 hover:opacity-100 transition-opacity">
+                    <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80" alt="Aarti Singh" class="w-full h-full rounded-full object-cover grayscale">
+                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
+                    </div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
+                        Aarti • Offline
                     </div>
                 </div>
 
@@ -407,9 +460,9 @@
 
             <!-- Profile Info Header (Triggered from avatar click) -->
             <div id="modal-profile-header" class="hidden mb-6 p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center space-x-3">
-                <img id="modal-avatar-img" src="" class="w-12 h-12 rounded-full object-cover border border-indigo-400">
+                <img id="modal-avatar-img" src="" class="w-14 h-14 rounded-full object-cover border-2 border-indigo-400">
                 <div>
-                    <h4 id="modal-profile-name" class="font-bold text-white text-sm">--</h4>
+                    <h4 id="modal-profile-name" class="font-bold text-white text-base">--</h4>
                     <p id="modal-profile-dist" class="text-xs text-indigo-300">--</p>
                 </div>
             </div>
