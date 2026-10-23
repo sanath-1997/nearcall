@@ -3,751 +3,485 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NearCall - Enjoy Live Video Calls Near You</title>
+    <title>Bengaluru Live Video Call</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
                         brand: {
-                            50: '#f0f5ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            neon: '#00f2fe',
-                            pink: '#ff0844'
-                        }
-                    },
-                    animation: {
-                        'pulse-glow': 'pulseGlow 2s infinite',
-                        'radar-sweep': 'radarSweep 4s linear infinite',
-                        'float-slow': 'float 6s ease-in-out infinite',
-                        'float-delayed': 'float 6s ease-in-out 3s infinite',
-                    },
-                    keyframes: {
-                        pulseGlow: {
-                            '0%, 100%': { boxShadow: '0 0 25px rgba(99, 102, 241, 0.6), 0 0 50px rgba(0, 242, 254, 0.3)' },
-                            '50%': { boxShadow: '0 0 45px rgba(99, 102, 241, 0.9), 0 0 80px rgba(0, 242, 254, 0.6)' },
-                        },
-                        radarSweep: {
-                            '0%': { transform: 'rotate(0deg)' },
-                            '100%': { transform: 'rotate(360deg)' },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-12px)' },
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
                         }
                     }
                 }
             }
         }
     </script>
-
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0b0f19;
-            color: #f3f4f6;
-            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
         }
 
-        /* Continuous Ripple Effect for Primary Buttons */
-        .ripple-btn-container {
-            position: relative;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .ripple-ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 2px solid rgba(99, 102, 241, 0.7);
-            animation: ripple-out 2.5s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
-            pointer-events: none;
-        }
-
-        .ripple-ring:nth-child(2) {
-            animation-delay: 0.8s;
-            border-color: rgba(236, 72, 153, 0.6);
-        }
-
-        .ripple-ring:nth-child(3) {
-            animation-delay: 1.6s;
-            border-color: rgba(0, 242, 254, 0.5);
-        }
-
-        @keyframes ripple-out {
-            0% {
-                width: 100%;
-                height: 100%;
-                opacity: 0.9;
-                transform: scale(1);
-            }
-            100% {
-                width: 260%;
-                height: 260%;
-                opacity: 0;
-                transform: scale(1.6);
-            }
-        }
-
-        /* Dynamic click ripple */
-        .click-ripple {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 50%;
-            transform: scale(0);
-            animation: click-animation 0.6s linear;
-            pointer-events: none;
-        }
-
-        @keyframes click-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-
-        /* Glassmorphism Card Effect */
+        /* Glassmorphism styles */
         .glass-card {
-            background: rgba(17, 24, 39, 0.75);
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-modal {
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Animated Pulsing Dot for Online Status */
+        .pulse-online {
+            position: relative;
+        }
+        .pulse-online::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: #22c55e;
+            border-radius: 50%;
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.5); opacity: 0; }
+            100% { transform: scale(0.95); opacity: 0; }
+        }
+
+        /* Video element mirroring */
+        .mirror-video {
+            transform: scaleX(-1);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+<body class="min-h-screen flex justify-center bg-slate-950 text-slate-100 antialiased selection:bg-pink-500 selection:text-white">
 
-    <header class="w-full py-5 px-6 max-w-7xl mx-auto flex justify-between items-center z-20">
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="goToStep1()">
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                <i class="fa-solid font-bold fa-video text-white text-lg"></i>
-            </div>
-            <span class="text-2xl font-extrabold bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent tracking-tight">NearCall</span>
-        </div>
-        
-        <div class="flex items-center space-x-4">
-            <div class="hidden sm:flex items-center px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-medium text-emerald-400">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping mr-2"></span>
-                <span id="active-user-count">1,248</span> Local People Online
-            </div>
-            <button onclick="openPlansModal()" class="px-4 py-2 text-xs font-semibold rounded-xl bg-slate-800/80 hover:bg-slate-700 text-indigo-300 border border-indigo-500/30 transition-all">
-                <i class="fa-solid fa-crown text-yellow-400 mr-1.5"></i> Call Plans
-            </button>
-        </div>
-    </header>
+    <!-- Container Frame to optimize for Mobile & Desktop -->
+    <div id="appContainer" class="w-full max-w-md min-h-screen bg-slate-900 shadow-2xl flex flex-col relative overflow-hidden border-x border-slate-800/50">
 
-    <!-- MAIN CONTAINER -->
-    <main class="flex-grow flex items-center justify-center p-4 relative z-10 my-auto">
-        
-        <section id="hero-section" class="w-full max-w-3xl text-center py-8 flex flex-col items-center justify-center transition-all duration-500">
-            <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-4">
-                <i class="fa-solid fa-location-dot text-pink-500"></i>
-                <span>Hyper-Local Video Discovery</span>
-            </div>
-
-            <!-- MEDIUM-SMALL IMAGE JUST BELOW 'Hyper Local Discovery' -->
-            <div class="mb-6 w-full max-w-md sm:max-w-lg rounded-2xl overflow-hidden shadow-2xl border border-indigo-500/30 p-1 bg-gradient-to-r from-indigo-500/20 via-pink-500/20 to-purple-500/20">
-                <a href="https://unsplash.com/s/photos/hot-women" target="_blank" class="block relative overflow-hidden rounded-xl group">
-                    <img src="https://images.unsplash.com/photo-1568819317551-31051b37f69f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" 
-                         alt="Featured Discovery" 
-                         class="w-full h-48 sm:h-56 object-cover object-center group-hover:scale-105 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end justify-center pb-3">
-                        <span class="text-xs text-slate-200 font-semibold bg-slate-950/70 px-3 py-1 rounded-full border border-slate-700/60 backdrop-blur-sm">
-                            <i class="fa-solid fa-fire text-pink-500 mr-1"></i> Nearby Profiles Active Now
-                        </span>
-                    </div>
-                </a>
-            </div>
-
-            <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none mb-6">
-                Enjoy live video call with <span class="bg-gradient-to-r from-indigo-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent">ladies 🔥 near you</span>
-            </h1>
-
-            <p class="text-slate-400 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed font-normal">
-                Connect instantly with verified nearby individuals in real-time. Safe, high-definition, and encrypted video streaming tailored to your current vicinity.
-            </p>
-
-            <!-- ROUND RIPPLE BUTTON -->
-            <div class="ripple-btn-container mb-8">
-                <div class="ripple-ring"></div>
-                <div class="ripple-ring"></div>
-                <div class="ripple-ring"></div>
+        <!-- ================= 1. INITIAL / LOGIN SCREEN ================= -->
+        <div id="loginScreen" class="flex-1 flex flex-col justify-between transition-all duration-500 opacity-100 z-10 pb-8">
+            <div class="relative w-full h-[65vh] overflow-hidden rounded-b-3xl shadow-lg">
+                <img id="heroImage" src="https://images.unsplash.com/photo-1568819317551-31051b37f69f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" 
+                     alt="Bengaluru Connection" 
+                     class="w-full h-full object-cover object-top filter brightness-95"
+                     onerror="this.src='https://placehold.co/600x800/e2e8f0/1e293b?text=Bengaluru+Live';">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
                 
-                <button onclick="goToStep2(event)" class="relative z-10 w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-lg sm:text-xl shadow-2xl shadow-indigo-600/50 hover:scale-105 active:scale-95 transition-all duration-300 flex flex-col items-center justify-center gap-2 group border-4 border-white/20">
-                    <i class="fa-solid fa-video text-3xl sm:text-4xl group-hover:rotate-12 transition-transform"></i>
-                    <span class="tracking-wider text-xs sm:text-sm font-extrabold uppercase">Find Matches</span>
-                </button>
-            </div>
-
-            <p class="text-xs text-slate-500 flex items-center gap-1.5">
-                <i class="fa-solid fa-shield-halved text-emerald-400"></i> 100% Verified Profiles & Safe Connection
-            </p>
-        </section>
-
-        <section id="config-section" class="hidden w-full max-w-xl glass-card rounded-3xl p-6 sm:p-10 shadow-2xl border border-slate-800 transition-all duration-500">
-            
-            <div class="flex items-center justify-between mb-8">
-                <div>
-                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-indigo-400"></i> Location Settings
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-1">Select your city and area to find nearby video partners.</p>
-                </div>
-                <button onclick="goToStep1()" class="text-slate-400 hover:text-white text-xs bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-                    <i class="fa-solid fa-arrow-left mr-1"></i> Back
-                </button>
-            </div>
-
-            <form id="location-form" onsubmit="handleStartCall(event)" class="space-y-6">
-                <!-- City Selection Dropdown -->
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-                        Select City <span class="text-pink-500">*</span>
-                    </label>
-                    <div class="relative">
-                        <select id="city-select" required onchange="handleCityChange(this.value)" class="w-full bg-slate-900/90 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 text-white text-sm rounded-xl px-4 py-3.5 outline-none appearance-none cursor-pointer transition-all">
-                            <option value="" disabled selected>-- Choose City --</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
-                            <i class="fa-solid fa-chevron-down text-xs"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Area Selection Dropdown -->
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-                        Select Area <span class="text-pink-500">*</span>
-                    </label>
-                    <div class="relative">
-                        <select id="area-select" required disabled class="w-full bg-slate-900/90 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 text-white text-sm rounded-xl px-4 py-3.5 outline-none appearance-none cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                            <option value="" disabled selected>-- Choose City First --</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
-                            <i class="fa-solid fa-chevron-down text-xs"></i>
-                        </div>
-                    </div>
-                    <p id="area-help" class="text-[11px] text-slate-500 mt-1.5">Area selection is locked until a city is chosen.</p>
-                </div>
-
-                <!-- Start Video Call Button with Ripple Effect -->
-                <div class="pt-6 flex flex-col items-center">
-                    <div class="ripple-btn-container my-4">
-                        <div class="ripple-ring"></div>
-                        <div class="ripple-ring"></div>
-                        <div class="ripple-ring"></div>
-
-                        <button type="submit" id="start-call-btn" class="relative z-10 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-tr from-emerald-500 via-indigo-600 to-pink-600 text-white font-black text-xs sm:text-sm shadow-xl shadow-indigo-500/40 hover:scale-105 active:scale-95 transition-all duration-300 flex flex-col items-center justify-center gap-1.5 border-2 border-white/30 uppercase tracking-wider text-center p-2">
-                            <i class="fa-solid fa-video text-2xl sm:text-3xl"></i>
-                            <span>Start Video Call</span>
-                        </button>
-                    </div>
-                    <p class="text-[11px] text-slate-400 text-center mt-2">
-                        Clicking start will begin local radar scanning in your specified area.
-                    </p>
-                </div>
-            </form>
-        </section>
-
-        <section id="radar-section" class="hidden w-full max-w-4xl relative flex flex-col items-center justify-center py-6">
-            
-            <!-- Radar Header Status -->
-            <div class="glass-card px-6 py-3 rounded-full border border-indigo-500/30 flex items-center space-x-3 mb-6 shadow-xl">
-                <span class="relative flex h-3 w-3">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
-                </span>
-                <span class="text-xs sm:text-sm font-semibold text-slate-200">
-                    Scanning within Area: <span id="radar-area-label" class="text-pink-400 font-bold">--</span> (<span id="radar-city-label" class="text-indigo-400 font-bold">--</span>)
-                </span>
-                <button onclick="goToStep2()" class="text-xs text-slate-400 hover:text-white underline ml-2">Change</button>
-            </div>
-
-            <!-- Radar Interface Container -->
-            <div id="radar-canvas-container" class="relative w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[580px] md:h-[580px] rounded-full border border-indigo-500/20 bg-slate-950/60 shadow-2xl flex items-center justify-center overflow-hidden">
-                
-                <!-- Concentric Distance Rings -->
-                <div class="absolute w-[80%] h-[80%] rounded-full border border-indigo-500/20"></div>
-                <div class="absolute w-[60%] h-[60%] rounded-full border border-indigo-500/15"></div>
-                <div class="absolute w-[40%] h-[40%] rounded-full border border-indigo-500/10"></div>
-                <div class="absolute w-[20%] h-[20%] rounded-full border border-indigo-500/10"></div>
-
-                <!-- Radar Axis Lines -->
-                <div class="absolute w-full h-[1px] bg-indigo-500/10"></div>
-                <div class="absolute h-full w-[1px] bg-indigo-500/10"></div>
-
-                <!-- Radar Rotating Sweep Beam -->
-                <div class="absolute top-0 left-0 w-full h-full animate-radar-sweep origin-center pointer-events-none">
-                    <div class="w-1/2 h-1/2 bg-gradient-to-br from-indigo-500/30 via-pink-500/10 to-transparent origin-bottom-right rounded-tl-full"></div>
-                </div>
-
-                <!-- CENTER CARTOON AVATAR (YOU) -->
-                <div class="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-indigo-400 shadow-xl shadow-indigo-500/50 bg-gradient-to-tr from-indigo-900 to-purple-900 p-1 flex items-center justify-center group cursor-pointer">
-                    <div class="w-full h-full rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center overflow-hidden shadow-inner">
-                        <svg class="w-12 h-12 text-white transform translate-y-1" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 12c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z"/>
-                            <circle cx="9" cy="7" r="1" fill="#1e1b4b"/>
-                            <circle cx="15" cy="7" r="1" fill="#1e1b4b"/>
-                            <path d="M10 10c1 1 3 1 4 0" stroke="#1e1b4b" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-                        </svg>
-                    </div>
-                    <div class="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center text-[11px] text-white font-extrabold opacity-0 group-hover:opacity-100 transition-opacity">You</div>
-                </div>
-
-                <!-- PROFILES - PROMINENT, BIG & VISIBLE WITH PROVIDED INDIAN PROFILE URLS -->
-
-                <!-- Person 1 (ONLINE - Ananya Sharma) -->
-                <div onclick="selectProfile('Ananya Sharma', '1.2 km away', true, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeiipEFUJO2s4zwlnnJ0cFp_jKyK_m6H3OpuKdGUUtCXCVaqLKWjWg3Q4g&s=10')" 
-                     class="absolute top-[12%] left-[18%] z-20 cursor-pointer group animate-float-slow">
-                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-emerald-400 via-pink-500 to-indigo-500 shadow-xl shadow-emerald-500/40 group-hover:scale-115 transition-all duration-300">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeiipEFUJO2s4zwlnnJ0cFp_jKyK_m6H3OpuKdGUUtCXCVaqLKWjWg3Q4g&s=10" alt="Ananya Sharma" class="w-full h-full rounded-full object-cover border-2 border-slate-900">
-                        <span class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
-                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                        </span>
-                    </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/95 border border-slate-700 px-2.5 py-1 rounded-lg text-xs font-semibold text-white whitespace-nowrap shadow-xl">
-                        Ananya • <span class="text-emerald-400 font-bold">Online</span>
-                    </div>
-                </div>
-
-                <!-- Person 2 (ONLINE - Priya Patel) -->
-                <div onclick="selectProfile('Priya Patel', '0.8 km away', true, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSNVy-yqSJr4-blukYZWkYEPSzyYNLRAX37CvJabw2DKzkvnr0uJtw2h4&s=10')" 
-                     class="absolute top-[22%] right-[14%] z-20 cursor-pointer group animate-float-delayed">
-                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-emerald-400 via-pink-500 to-indigo-500 shadow-xl shadow-emerald-500/40 group-hover:scale-115 transition-all duration-300">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSNVy-yqSJr4-blukYZWkYEPSzyYNLRAX37CvJabw2DKzkvnr0uJtw2h4&s=10" alt="Priya Patel" class="w-full h-full rounded-full object-cover border-2 border-slate-900">
-                        <span class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
-                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                        </span>
-                    </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/95 border border-slate-700 px-2.5 py-1 rounded-lg text-xs font-semibold text-white whitespace-nowrap shadow-xl">
-                        Priya • <span class="text-emerald-400 font-bold">Online</span>
-                    </div>
-                </div>
-
-                <!-- Person 3 (ONLINE - Riya Verma) -->
-                <div onclick="selectProfile('Riya Verma', '2.5 km away', true, 'https://live.staticflickr.com/424/31933277831_03f67d44cb_z.jpg')" 
-                     class="absolute bottom-[16%] left-[22%] z-20 cursor-pointer group animate-float-slow">
-                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-emerald-400 via-pink-500 to-indigo-500 shadow-xl shadow-emerald-500/40 group-hover:scale-115 transition-all duration-300">
-                        <img src="https://live.staticflickr.com/424/31933277831_03f67d44cb_z.jpg" alt="Riya Verma" class="w-full h-full rounded-full object-cover border-2 border-slate-900">
-                        <span class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
-                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                        </span>
-                    </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/95 border border-slate-700 px-2.5 py-1 rounded-lg text-xs font-semibold text-white whitespace-nowrap shadow-xl">
-                        Riya • <span class="text-emerald-400 font-bold">Online</span>
-                    </div>
-                </div>
-
-                <!-- Person 4 (ONLINE - Sunita Kaur) -->
-                <div onclick="selectProfile('Sunita Kaur', '1.9 km away', true, 'https://images.pexels.com/photos/28316359/pexels-photo-28316359.jpeg?cs=srgb&dl=pexels-stardustmultimedia-28316359.jpg&fm=jpg')" 
-                     class="absolute bottom-[18%] right-[16%] z-20 cursor-pointer group animate-float-delayed">
-                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-emerald-400 via-pink-500 to-indigo-500 shadow-xl shadow-emerald-500/40 group-hover:scale-115 transition-all duration-300">
-                        <img src="https://images.pexels.com/photos/28316359/pexels-photo-28316359.jpeg?cs=srgb&dl=pexels-stardustmultimedia-28316359.jpg&fm=jpg" alt="Sunita Kaur" class="w-full h-full rounded-full object-cover border-2 border-slate-900">
-                        <span class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
-                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                        </span>
-                    </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/95 border border-slate-700 px-2.5 py-1 rounded-lg text-xs font-semibold text-white whitespace-nowrap shadow-xl">
-                        Sunita • <span class="text-emerald-400 font-bold">Online</span>
-                    </div>
-                </div>
-
-                <!-- INACTIVE / OFFLINE PROFILES (SIMILAR STYLED INDIAN AVATARS) -->
-                
-                <!-- Inactive Person 1 (Kavya - Offline) -->
-                <div onclick="selectProfile('Kavya Reddy', '3.4 km away', false, 'https://images.unsplash.com/photo-1607746882042-944635d10e46?w=200&auto=format&fit=crop&q=80')" 
-                     class="absolute top-[42%] left-[6%] z-20 cursor-pointer group opacity-65 hover:opacity-100 transition-opacity">
-                    <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
-                        <img src="https://images.unsplash.com/photo-1607746882042-944635d10e46?w=200&auto=format&fit=crop&q=80" alt="Kavya Reddy" class="w-full h-full rounded-full object-cover grayscale">
-                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
-                    </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
-                        Kavya • Offline
-                    </div>
-                </div>
-
-                <!-- Inactive Person 2 (Sneha - Offline) -->
-                <div onclick="selectProfile('Sneha Rao', '2.9 km away', false, 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80')" 
-                     class="absolute top-[48%] right-[6%] z-20 cursor-pointer group opacity-65 hover:opacity-100 transition-opacity">
-                    <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80" alt="Sneha Rao" class="w-full h-full rounded-full object-cover grayscale">
-                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
-                    </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
-                        Sneha • Offline
-                    </div>
-                </div>
-
-                <!-- Inactive Person 3 (Meera - Offline) -->
-                <div onclick="selectProfile('Meera Joshi', '4.1 km away', false, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80')" 
-                     class="absolute top-[5%] left-[45%] -translate-x-1/2 z-20 cursor-pointer group opacity-65 hover:opacity-100 transition-opacity">
-                    <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Meera Joshi" class="w-full h-full rounded-full object-cover grayscale">
-                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
-                    </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
-                        Meera • Offline
-                    </div>
-                </div>
-
-                <!-- Inactive Person 4 (Aarti - Offline) -->
-                <div onclick="selectProfile('Aarti Singh', '5.0 km away', false, 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80')" 
-                     class="absolute bottom-[4%] left-[48%] -translate-x-1/2 z-20 cursor-pointer group opacity-65 hover:opacity-100 transition-opacity">
-                    <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-slate-700 shadow-md group-hover:scale-110 transition-transform">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80" alt="Aarti Singh" class="w-full h-full rounded-full object-cover grayscale">
-                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-slate-500 border-2 border-slate-900"></span>
-                    </div>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded text-[10px] font-medium text-slate-400 whitespace-nowrap">
-                        Aarti • Offline
-                    </div>
-                </div>
-
-            </div>
-
-            <p class="text-xs text-slate-400 mt-6 text-center">
-                <i class="fa-solid fa-hand-pointer text-indigo-400 mr-1 animate-bounce"></i> Click any floating profile bubble above to start a direct call session.
-            </p>
-
-        </section>
-
-        <!-- WAITING SCREEN OVERLAY -->
-        <section id="waiting-section" class="hidden fixed inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
-            <div class="glass-card max-w-md w-full p-8 rounded-3xl border border-slate-800 flex flex-col items-center shadow-2xl relative">
-                
-                <div class="relative mb-6">
-                    <img src="https://m.media-amazon.com/images/I/715cCEDSkiL.jpg" alt="Waiting" class="w-48 h-48 sm:w-56 sm:h-56 object-cover rounded-2xl shadow-xl border-2 border-indigo-500/30">
-                    
-                    <!-- Processing Badge -->
-                    <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-slate-900 border border-indigo-500/40 text-indigo-300 px-4 py-1 rounded-full text-xs font-semibold flex items-center gap-2 shadow-lg whitespace-nowrap">
-                        <i class="fa-solid fa-circle-notch fa-spin text-pink-500"></i>
-                        <span>Payment Processing...</span>
-                    </div>
-                </div>
-
-                <h2 class="text-3xl font-black text-white tracking-wide mb-2">Waiting</h2>
-                <p class="text-slate-400 text-sm max-w-xs leading-relaxed">
-                    Please wait while we confirm your payment in the opened tab and establish your encrypted call line.
-                </p>
-            </div>
-        </section>
-
-        <!-- SERVER ERROR PAGE -->
-        <section id="error-page" class="hidden fixed inset-0 z-50 bg-white text-slate-900 flex flex-col items-center justify-center p-6 text-center">
-            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-2">server error</h1>
-            <p class="text-slate-500 text-sm">500 Internal Server Error</p>
-        </section>
-
-    </main>
-
-    <div id="plans-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
-        
-        <div class="w-full max-w-lg glass-card rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-2xl relative transform scale-95 transition-transform duration-300" id="modal-card">
-            
-            <!-- Close Button -->
-            <button onclick="closePlansModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center border border-slate-700 transition-colors">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <!-- Profile Info Header (Triggered from avatar click) -->
-            <div id="modal-profile-header" class="hidden mb-6 p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center space-x-3">
-                <img id="modal-avatar-img" src="" class="w-14 h-14 rounded-full object-cover border-2 border-indigo-400">
-                <div>
-                    <h4 id="modal-profile-name" class="font-bold text-white text-base">--</h4>
-                    <p id="modal-profile-dist" class="text-xs text-indigo-300">--</p>
-                </div>
-            </div>
-
-            <div class="text-center mb-6">
-                <span class="text-xs font-bold text-pink-400 uppercase tracking-widest bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">Video Call Pass</span>
-                <h3 class="text-2xl font-black text-white mt-2">Select Duration Plan</h3>
-                <p class="text-xs text-slate-400 mt-1">Choose a pass option to instantly start your HD live video call.</p>
-            </div>
-
-            <!-- PRICING OPTIONS LIST -->
-            <div class="space-y-3.5 mb-6">
-                
-                <!-- OPTION 1: 90 INR (discounted from 150) -->
-                <div onclick="selectPlan('Option 1', 90, '10 mins', 'https://rzp.io/rzp/Ct5X22Pw', event)" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
-                    <div class="flex items-center space-x-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-indigo-400 font-bold">
-                            <i class="fa-solid fa-clock"></i>
-                        </div>
-                        <div>
-                            <div class="text-sm font-bold text-white">Option 1</div>
-                            <div class="text-xs text-slate-400">10 Minutes Live Call</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-xl font-black text-white flex items-center gap-2 justify-end">
-                            <span class="text-xs text-slate-500 line-through font-normal">₹150</span>
-                            <span>₹90</span>
-                        </div>
-                        <span class="text-[10px] text-emerald-400 font-medium">Special Discount</span>
-                    </div>
-                </div>
-
-                <!-- OPTION 2: 150 INR -->
-                <div onclick="selectPlan('Option 2', 150, '20 mins', 'https://rzp.io/rzp/SEejceU2', event)" class="plan-card cursor-pointer border border-slate-700 hover:border-indigo-500 bg-slate-900/60 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02]">
-                    <div class="flex items-center space-x-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold">
-                            <i class="fa-solid fa-hourglass-half"></i>
-                        </div>
-                        <div>
-                            <div class="text-sm font-bold text-white">Option 2</div>
-                            <div class="text-xs text-slate-400">20 Minutes Live Call</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-xl font-black text-white">₹150</div>
-                        <span class="text-[10px] text-purple-400 font-semibold">Popular</span>
-                    </div>
-                </div>
-
-                <!-- OPTION 3: 400 INR (LOCATION REVEAL) -->
-                <div onclick="selectPlan('Option 3', 400, '25 mins + Location Reveal', 'https://rzp.io/rzp/O6MkuQ3f', event)" class="plan-card relative cursor-pointer border-2 border-pink-500/80 bg-gradient-to-r from-pink-950/30 via-slate-900 to-indigo-950/30 p-4 rounded-2xl flex items-center justify-between transition-all hover:scale-[1.02] shadow-lg shadow-pink-500/10">
-                    <span class="absolute -top-3 right-4 bg-gradient-to-r from-pink-500 to-indigo-500 text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow">
-                        RECOMMENDED
+                <div class="absolute top-4 left-4 right-4 flex justify-between items-center">
+                    <span class="bg-black/40 backdrop-blur-md text-xs font-semibold px-3 py-1.5 rounded-full border border-white/10 text-pink-300 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Live in Bengaluru
                     </span>
-                    <div class="flex items-center space-x-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-pink-500/20 border border-pink-500/40 flex items-center justify-center text-pink-400 font-bold">
-                            <i class="fa-solid fa-location-crosshairs"></i>
-                        </div>
-                        <div>
-                            <div class="text-sm font-bold text-white flex items-center gap-1.5">
-                                Option 3 <i class="fa-solid fa-crown text-yellow-400 text-xs"></i>
-                            </div>
-                            <div class="text-xs text-pink-300 font-medium">25 Mins + Location Reveal</div>
-                        </div>
+                </div>
+
+                <div class="absolute bottom-6 left-6 right-6 text-left">
+                    <h1 class="text-3xl font-extrabold text-white tracking-tight leading-tight">
+                        Connect Live with <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-300">Bengaluru Women</span>
+                    </h1>
+                    <p class="text-slate-300 text-sm mt-2 font-medium">Verified local profiles. Instant HD 1-on-1 video calls.</p>
+                </div>
+            </div>
+
+            <div class="px-6 mt-6 flex flex-col items-center gap-4">
+                <!-- Fast Login Button with Gradient -->
+                <button onclick="handleFastLogin()" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 text-white font-bold text-lg shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-3 group cursor-pointer">
+                    <i class="fa-solid font-bold fa-bolt text-amber-300 text-xl group-hover:scale-125 transition-transform duration-200"></i>
+                    <span>Fast Login</span>
+                </button>
+                <p class="text-xs text-slate-400 text-center">100% Private & Secure • No Password Required</p>
+            </div>
+        </div>
+
+        <!-- ================= 2. MAIN DASHBOARD / PROFILE LIST SCREEN ================= -->
+        <div id="dashboardScreen" class="hidden flex-1 flex-col transition-all duration-500 z-10 pb-10">
+            <!-- App Header -->
+            <header class="sticky top-0 z-20 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-4 px-5 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                        <i class="fa-solid fa-video text-xs"></i>
                     </div>
-                    <div class="text-right">
-                        <div class="text-xl font-black text-pink-400">₹400</div>
-                        <span class="text-[10px] text-emerald-400 font-bold">Full Access</span>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-100 leading-tight">Live Video Call</h2>
+                        <p class="text-[11px] text-pink-400 font-medium flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot text-[10px]"></i> Women in Bengaluru
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 3 Active
+                    </span>
+                </div>
+            </header>
+
+            <!-- Main Content Grid -->
+            <div class="p-4 space-y-4 overflow-y-auto flex-1">
+                <div class="bg-gradient-to-r from-pink-900/30 via-slate-800/50 to-slate-800/30 p-3.5 rounded-2xl border border-pink-500/20 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-300 font-medium">Select a profile to start an instant private video call.</p>
+                    </div>
+                    <i class="fa-solid fa-[#ec4899] fa-sparkles text-pink-400 text-lg ml-2"></i>
+                </div>
+
+                <!-- Profile List Container -->
+                <div id="profileContainer" class="space-y-3.5">
+                    <!-- Dynamic Profiles Injected Here by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 3. PROFILE MODAL & PAYMENT FLOW ================= -->
+        <div id="profileModal" class="fixed inset-0 z-50 hidden flex items-end justify-center sm:items-center p-0 sm:p-4 glass-modal transition-opacity duration-300">
+            <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-in slide-in-from-bottom duration-300">
+                <!-- Modal Header / Cover -->
+                <div class="relative h-48 w-full overflow-hidden bg-slate-800">
+                    <img id="modalProfileImg" src="" alt="Profile Header" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/30 to-transparent"></div>
+                    <button onclick="closeProfileModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center backdrop-blur-md border border-white/10 hover:bg-black/70">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div class="absolute bottom-3 left-4 right-4 flex justify-between items-end">
+                        <div>
+                            <div id="modalStatusBadge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold mb-1">
+                                <!-- Status badge JS -->
+                            </div>
+                            <h3 id="modalProfileName" class="text-2xl font-bold text-white leading-tight"></h3>
+                            <p id="modalProfileTag" class="text-xs text-slate-300 font-medium"></p>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Modal Body / Call Plans -->
+                <div class="p-5 space-y-4 overflow-y-auto">
+                    <p class="text-xs text-slate-400 font-semibold tracking-wide uppercase">Select Call Duration</p>
+
+                    <!-- Pricing Options -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <!-- Option 1: 5 Min -->
+                        <div id="planOption1" onclick="selectPlan(1, 50, 'https://rzp.io/rzp/Ct5X22Pw')" class="plan-card relative cursor-pointer border-2 border-pink-500 bg-pink-500/10 rounded-2xl p-4 flex flex-col justify-between transition-all duration-200">
+                            <span class="absolute top-2 right-2 text-pink-400 select-check"><i class="fa-solid fa-circle-check"></i></span>
+                            <div>
+                                <span class="text-xs font-semibold text-slate-300">Quick Call</span>
+                                <h4 class="text-xl font-extrabold text-white mt-1">5 Min</h4>
+                            </div>
+                            <div class="mt-3">
+                                <span class="text-2xl font-black text-pink-400">₹50</span>
+                            </div>
+                        </div>
+
+                        <!-- Option 2: 10 Min -->
+                        <div id="planOption2" onclick="selectPlan(2, 90, 'https://rzp.io/rzp/SEejceU2')" class="plan-card relative cursor-pointer border-2 border-slate-700 bg-slate-800/60 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-600 transition-all duration-200">
+                            <span class="absolute top-2 right-2 text-slate-500 select-check opacity-0"><i class="fa-solid fa-circle-check"></i></span>
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">Popular</span>
+                                <h4 class="text-xl font-extrabold text-white mt-1">10 Min</h4>
+                            </div>
+                            <div class="mt-3">
+                                <span class="text-2xl font-black text-slate-200">₹90</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Direct Pay Button -->
+                    <button id="payButton" onclick="redirectToPayment()" class="w-full mt-4 py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-base shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <span>Pay ₹50 & Start Call</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 4. SIMULATED VIDEO CALL SCREEN ================= -->
+        <div id="videoCallScreen" class="fixed inset-0 z-50 bg-slate-950 hidden flex-col justify-between p-4">
+            <!-- Top Call Header Overlay -->
+            <div class="relative z-10 flex items-center justify-between bg-slate-900/60 backdrop-blur-md p-3 rounded-2xl border border-white/10">
+                <div class="flex items-center gap-3">
+                    <img id="callAvatar" src="" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-400">
+                    <div>
+                        <h4 id="callName" class="text-sm font-bold text-white"></h4>
+                        <p class="text-[11px] text-emerald-400 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Encrypted 1-on-1 Call
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono font-bold text-pink-400" id="callTimer">
+                    05:00
+                </div>
             </div>
 
-            <!-- Modal Action Buttons -->
-            <button id="pay-confirm-btn" onclick="executePaymentSim()" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-95 text-white font-extrabold text-sm shadow-xl shadow-indigo-500/30 transition-all flex items-center justify-center gap-2">
-                <i class="fa-solid fa-lock"></i>
-                <span id="pay-btn-text">Select Option to Proceed</span>
-            </button>
+            <!-- Remote Video Stream Simulation -->
+            <div class="absolute inset-0 z-0 bg-slate-900 overflow-hidden flex items-center justify-center">
+                <img id="callStreamImg" src="" class="w-full h-full object-cover filter brightness-90">
+                <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60"></div>
+                
+                <!-- Mock Video Overlay Text -->
+                <div class="absolute bottom-28 left-4 bg-black/40 backdrop-blur-md px-3 py-1 rounded-lg text-xs text-white/80 border border-white/10">
+                    <i class="fa-solid fa-signal text-emerald-400 mr-1"></i> HD 1080p Live
+                </div>
+            </div>
 
-            <p class="text-[10px] text-center text-slate-500 mt-3">
-                Secure end-to-end encrypted connection. Zero hidden fees.
-            </p>
+            <!-- Self Camera Preview (Picture-in-Picture) -->
+            <div class="absolute bottom-28 right-4 z-10 w-28 h-40 rounded-2xl overflow-hidden border-2 border-white/20 bg-slate-800 shadow-2xl">
+                <video id="selfVideo" autoplay muted playsinline class="w-full h-full object-cover mirror-video"></video>
+                <div id="selfVideoFallback" class="hidden w-full h-full bg-slate-800 flex flex-col items-center justify-center text-slate-400 text-xs">
+                    <i class="fa-solid fa-user-slash text-lg mb-1"></i>
+                    <span>Cam Off</span>
+                </div>
+            </div>
+
+            <!-- Call Controls Bar -->
+            <div class="relative z-10 flex items-center justify-center gap-5 bg-slate-900/80 backdrop-blur-md py-3.5 px-6 rounded-full border border-white/10 mx-auto max-w-xs">
+                <!-- Mute Mic -->
+                <button id="toggleMicBtn" onclick="toggleMic()" class="w-11 h-11 rounded-full bg-slate-800 text-white flex items-center justify-center hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-microphone text-sm"></i>
+                </button>
+                
+                <!-- End Call -->
+                <button onclick="endCall()" class="w-14 h-14 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg shadow-red-600/30 hover:bg-red-700 active:scale-95 transition">
+                    <i class="fa-solid fa-phone-slash text-xl"></i>
+                </button>
+
+                <!-- Toggle Camera -->
+                <button id="toggleCamBtn" onclick="toggleCam()" class="w-11 h-11 rounded-full bg-slate-800 text-white flex items-center justify-center hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-video text-sm"></i>
+                </button>
+            </div>
         </div>
+
+        <!-- Custom Notification/Alert Toast -->
+        <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-slate-800 text-white border border-slate-700 px-4 py-2.5 rounded-full shadow-xl text-xs font-medium flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none">
+            <i id="toastIcon" class="fa-solid fa-circle-info text-pink-400"></i>
+            <span id="toastMsg">Notification message</span>
+        </div>
+
     </div>
 
-    <footer class="w-full py-4 text-center text-xs text-slate-500 border-t border-slate-900/60 relative z-10">
-        <p>&copy; 2026 NearCall Video Inc. All rights reserved. • Indian Regional Discovery Network</p>
-    </footer>
-
+    <!-- JavaScript Logic -->
     <script>
-        const cityAreasData = {
-            "Bengaluru": [
-                "Koramangala", "Indiranagar", "Jayanagar", "HSR Layout", "Whitefield", 
-                "Electronic City", "JP Nagar", "Marathahalli", "BTM Layout", "Hebbal", 
-                "Banashankari", "Yelahanka", "Malleshwaram", "Basavanagudi", "Ulsoor"
-            ],
-            "Hyderabad": [
-                "Banjara Hills", "Jubilee Hills", "Gachibowli", "Hitec City", "Madhapur", 
-                "Kukatpally", "Secunderabad", "Ameerpet", "Begumpet", "Kachiguda", 
-                "Dilsukhnagar", "LB Nagar", "Miyapur", "Tolichowki", "Mehdipatnam"
-            ],
-            "Mumbai": [
-                "Andheri", "Bandra", "Juhu", "Colaba", "Dadar", 
-                "Borivali", "Malad", "Goregaon", "Powai", "Ghatkopar", 
-                "Thane", "Kurla", "Worli", "Lower Parel", "Santacruz"
-            ],
-            "Chennai": [
-                "T. Nagar", "Adyar", "Anna Nagar", "Mylapore", "Velachery", 
-                "Nungambakkam", "Besant Nagar", "Kilpauk", "Tambaram", "OMR", 
-                "Porur", "Guindy", "Royapettah", "Alwarpet", "Kodambakkam"
-            ],
-            "Kochi": [
-                "Kadavanthra", "Kaloor", "Edappally", "Fort Kochi", "Panampilly Nagar", 
-                "Vyttila", "Marine Drive", "Palarivattom", "Varappuzha", "Thrippunithura", 
-                "Aluva", "Angamaly", "Kakkanad", "Thevara", "Mattancherry"
-            ],
-            "Kolkata": [
-                "Park Street", "Salt Lake", "New Town", "Ballygunge", "Dum Dum", 
-                "Behala", "Garia", "Jadavpur", "Tollygunge", "Shyambazar", 
-                "Alipore", "Baranagar", "Lake Town", "Rajarhat", "Howrah"
-            ]
-        };
+        // Profile Data using provided URLs and Indian Names
+        const profiles = [
+            {
+                id: 1,
+                name: "Priya Sharma",
+                age: 24,
+                location: "Indiranagar, Bengaluru",
+                status: "online",
+                bio: "Software developer & classical dancer. Love deep conversations!",
+                image: "https://images.unsplash.com/photo-1591901559829-ce65d7eaca0a?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+                tags: ["English", "Hindi", "Kannada"]
+            },
+            {
+                id: 2,
+                name: "Ananya Rao",
+                age: 23,
+                location: "Koramangala, Bengaluru",
+                status: "online",
+                bio: "Fashion blogger and foodie. Let's chat over coffee online!",
+                image: "https://images.unsplash.com/photo-1611145434336-2324aa4079cd?q=80&w=765&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+                tags: ["English", "Telugu"]
+            },
+            {
+                id: 3,
+                name: "Kavya Nair",
+                age: 25,
+                location: "HSR Layout, Bengaluru",
+                status: "online",
+                bio: "Architect & yoga practitioner. Excited to meet new friends.",
+                image: "https://images.unsplash.com/photo-1583900985737-6d0495555783?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+                tags: ["English", "Malayalam"]
+            },
+            {
+                id: 4,
+                name: "Riya Patel",
+                age: 22,
+                location: "Whitefield, Bengaluru",
+                status: "offline",
+                bio: "Ui/UX Designer. Available for friendly chats later today.",
+                image: "https://images.unsplash.com/photo-1698251127457-38da75299c05?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+                tags: ["English", "Gujarati"]
+            },
+            {
+                id: 5,
+                name: "Meera Reddy",
+                age: 26,
+                location: "Jayanagar, Bengaluru",
+                status: "offline",
+                bio: "Fitness trainer. Currently offline. Leave a message!",
+                image: "https://images.unsplash.com/photo-1591901559829-ce65d7eaca0a?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+                tags: ["English", "Kannada", "Telugu"]
+            }
+        ];
 
-        let selectedCity = "";
-        let selectedArea = "";
-        let chosenPlanData = null;
-        let timeoutTimer = null;
+        let selectedProfile = null;
+        let selectedAmount = 50;
+        let selectedPayUrl = 'https://rzp.io/rzp/Ct5X22Pw';
+        let mediaStream = null;
+        let callCountdown = null;
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const citySelect = document.getElementById("city-select");
-            Object.keys(cityAreasData).forEach(city => {
-                const opt = document.createElement("option");
-                opt.value = city;
-                opt.textContent = city;
-                citySelect.appendChild(opt);
-            });
+        // Render Profiles on Load
+        function renderProfiles() {
+            const container = document.getElementById('profileContainer');
+            container.innerHTML = '';
 
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('button')) {
-                    const btn = e.target.closest('button');
-                    const circle = document.createElement('span');
-                    const diameter = Math.max(btn.clientWidth, btn.clientHeight);
-                    const radius = diameter / 2;
-                    const rect = btn.getBoundingClientRect();
-
-                    circle.style.width = circle.style.height = `${diameter}px`;
-                    circle.style.left = `${e.clientX - rect.left - radius}px`;
-                    circle.style.top = `${e.clientY - rect.top - radius}px`;
-                    circle.classList.add('click-ripple');
-
-                    const ripple = btn.getElementsByClassName('click-ripple')[0];
-                    if (ripple) {
-                        ripple.remove();
+            profiles.forEach(profile => {
+                const isOnline = profile.status === 'online';
+                
+                const card = document.createElement('div');
+                card.className = `glass-card rounded-2xl p-3.5 flex items-center justify-between border ${isOnline ? 'hover:border-pink-500/40 cursor-pointer' : 'opacity-70 cursor-not-allowed'} transition-all duration-200`;
+                
+                card.onclick = () => {
+                    if (isOnline) {
+                        openProfileModal(profile);
+                    } else {
+                        showToast(`${profile.name} is currently offline. Choose an online user!`, 'fa-circle-exclamation');
                     }
-                    btn.appendChild(circle);
-                }
+                };
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-3.5">
+                        <div class="relative">
+                            <img src="${profile.image}" alt="${profile.name}" class="w-14 h-14 rounded-2xl object-cover border border-slate-700" onerror="this.src='https://placehold.co/200x200/334155/f8fafc?text=User'">
+                            <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full ${isOnline ? 'bg-emerald-500 border-2 border-slate-900 pulse-online' : 'bg-slate-500 border-2 border-slate-900'}"></span>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="font-bold text-slate-100 text-sm">${profile.name}, ${profile.age}</h3>
+                            </div>
+                            <p class="text-xs text-slate-400 font-medium flex items-center gap-1 mt-0.5">
+                                <i class="fa-solid fa-location-dot text-[10px] text-pink-400"></i> ${profile.location}
+                            </p>
+                            <div class="flex gap-1 mt-1.5">
+                                ${profile.tags.map(tag => `<span class="text-[10px] px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 font-medium">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        ${isOnline ? `
+                            <button class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 border border-pink-500/30 flex items-center justify-center hover:bg-pink-500 hover:text-white transition-all shadow-md">
+                                <i class="fa-solid fa-video text-xs"></i>
+                            </button>
+                        ` : `
+                            <span class="text-[11px] px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400 font-semibold">Offline</span>
+                        `}
+                    </div>
+                `;
+                container.appendChild(card);
             });
-        });
-
-        function goToStep2(e) {
-            document.getElementById("hero-section").classList.add("hidden");
-            document.getElementById("config-section").classList.remove("hidden");
-            document.getElementById("radar-section").classList.add("hidden");
         }
 
-        function goToStep1() {
-            document.getElementById("hero-section").classList.remove("hidden");
-            document.getElementById("config-section").classList.add("hidden");
-            document.getElementById("radar-section").classList.add("hidden");
-        }
-
-        function handleCityChange(city) {
-            selectedCity = city;
-            const areaSelect = document.getElementById("area-select");
-            const areaHelp = document.getElementById("area-help");
-
-            areaSelect.innerHTML = '<option value="" disabled selected>-- Choose Area --</option>';
+        // Fast Login Handler
+        function handleFastLogin() {
+            showToast('Logging in securely...', 'fa-circle-notch fa-spin');
             
-            if (city && cityAreasData[city]) {
-                cityAreasData[city].forEach(area => {
-                    const opt = document.createElement("option");
-                    opt.value = area;
-                    opt.textContent = area;
-                    areaSelect.appendChild(opt);
-                });
-                areaSelect.removeAttribute("disabled");
-                areaHelp.textContent = `Select an area in ${city}.`;
-                areaHelp.className = "text-[11px] text-emerald-400 mt-1.5 font-medium";
+            setTimeout(() => {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('dashboardScreen').classList.remove('hidden');
+                document.getElementById('dashboardScreen').classList.add('flex');
+                renderProfiles();
+                showToast('Welcome! Select a profile to connect.', 'fa-circle-check');
+            }, 800);
+        }
+
+        // Open Modal with selected profile
+        function openProfileModal(profile) {
+            selectedProfile = profile;
+            document.getElementById('modalProfileImg').src = profile.image;
+            document.getElementById('modalProfileName').innerText = `${profile.name}, ${profile.age}`;
+            document.getElementById('modalProfileTag').innerText = `${profile.location} • ${profile.tags.join(', ')}`;
+            
+            const badge = document.getElementById('modalStatusBadge');
+            badge.className = 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+            badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Online Now`;
+
+            // Default to 5 min option
+            selectPlan(1, 50, 'https://rzp.io/rzp/Ct5X22Pw');
+
+            document.getElementById('profileModal').classList.remove('hidden');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.add('hidden');
+        }
+
+        // Select Plan option
+        function selectPlan(optionNumber, amount, payUrl) {
+            selectedAmount = amount;
+            selectedPayUrl = payUrl;
+
+            const opt1 = document.getElementById('planOption1');
+            const opt2 = document.getElementById('planOption2');
+
+            const check1 = opt1.querySelector('.select-check');
+            const check2 = opt2.querySelector('.select-check');
+
+            if (optionNumber === 1) {
+                opt1.className = 'plan-card relative cursor-pointer border-2 border-pink-500 bg-pink-500/10 rounded-2xl p-4 flex flex-col justify-between transition-all duration-200';
+                check1.classList.remove('opacity-0');
+                
+                opt2.className = 'plan-card relative cursor-pointer border-2 border-slate-700 bg-slate-800/60 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-600 transition-all duration-200';
+                check2.classList.add('opacity-0');
             } else {
-                areaSelect.setAttribute("disabled", "true");
-                areaHelp.textContent = "Area selection is locked until a city is chosen.";
-                areaHelp.className = "text-[11px] text-slate-500 mt-1.5";
-            }
-        }
+                opt2.className = 'plan-card relative cursor-pointer border-2 border-pink-500 bg-pink-500/10 rounded-2xl p-4 flex flex-col justify-between transition-all duration-200';
+                check2.classList.remove('opacity-0');
 
-        function handleStartCall(e) {
-            e.preventDefault();
-            const cityVal = document.getElementById("city-select").value;
-            const areaVal = document.getElementById("area-select").value;
-
-            if (!cityVal) {
-                alert("Please select your city.");
-                return;
+                opt1.className = 'plan-card relative cursor-pointer border-2 border-slate-700 bg-slate-800/60 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-600 transition-all duration-200';
+                check1.classList.add('opacity-0');
             }
 
-            if (!areaVal) {
-                alert("Please select your area.");
-                return;
-            }
-
-            selectedCity = cityVal;
-            selectedArea = areaVal;
-
-            document.getElementById("radar-area-label").textContent = selectedArea;
-            document.getElementById("radar-city-label").textContent = selectedCity;
-
-            document.getElementById("config-section").classList.add("hidden");
-            document.getElementById("radar-section").classList.remove("hidden");
+            document.getElementById('payButton').innerHTML = `<span>Pay ₹${amount} & Start Call</span><i class="fa-solid fa-arrow-right text-xs"></i>`;
         }
 
-        function selectProfile(name, distance, isOnline, avatarUrl) {
-            const header = document.getElementById("modal-profile-header");
-            header.classList.remove("hidden");
-            
-            document.getElementById("modal-avatar-img").src = avatarUrl;
-            document.getElementById("modal-profile-name").textContent = name;
-            document.getElementById("modal-profile-dist").textContent = `${distance} • ${isOnline ? 'Online Now' : 'Offline'}`;
-            
-            openPlansModal();
+        // Redirect directly to payment link
+        function redirectToPayment() {
+            if (!selectedPayUrl) return;
+            showToast('Redirecting to secure Razorpay checkout...', 'fa-shield-halved');
+            setTimeout(() => {
+                window.location.href = selectedPayUrl;
+            }, 500);
         }
 
-        function openPlansModal() {
-            const modal = document.getElementById("plans-modal");
-            const card = document.getElementById("modal-card");
-            modal.classList.remove("pointer-events-none", "opacity-0");
-            card.classList.remove("scale-95");
-            card.classList.add("scale-100");
-        }
+        // Utility Toast Notification
+        function showToast(message, iconClass = 'fa-circle-info') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
 
-        function closePlansModal() {
-            const modal = document.getElementById("plans-modal");
-            const card = document.getElementById("modal-card");
-            modal.classList.add("pointer-events-none", "opacity-0");
-            card.classList.remove("scale-100");
-            card.classList.add("scale-95");
-        }
+            toastMsg.innerText = message;
+            toastIcon.className = `fa-solid ${iconClass} text-pink-400`;
 
-        function selectPlan(optionTitle, price, details, payUrl, event) {
-            chosenPlanData = { optionTitle, price, details, payUrl };
-            
-            document.querySelectorAll(".plan-card").forEach(el => {
-                el.classList.remove("ring-2", "ring-indigo-500");
-            });
-            event.currentTarget.classList.add("ring-2", "ring-indigo-500");
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
 
-            const payBtnText = document.getElementById("pay-btn-text");
-            payBtnText.textContent = `Pay ₹${price} for ${details}`;
-        }
-
-        function executePaymentSim() {
-            if (!chosenPlanData) {
-                alert("Please select one of the options (Option 1, 2, or 3) to continue.");
-                return;
-            }
-
-            // 1. Open Payment Link in NEW TAB
-            if (chosenPlanData.payUrl) {
-                window.open(chosenPlanData.payUrl, '_blank');
-            }
-
-            // 2. Hide modal and show Waiting section on original page
-            closePlansModal();
-            document.getElementById("waiting-section").classList.remove("hidden");
-
-            // 3. After 30 seconds, redirect page to blank "Server Error" screen
-            clearTimeout(timeoutTimer);
-            timeoutTimer = setTimeout(() => {
-                showServerErrorPage();
-            }, 30000);
-        }
-
-        function showServerErrorPage() {
-            document.getElementById("waiting-section").classList.add("hidden");
-            document.getElementById("error-page").classList.remove("hidden");
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2500);
         }
     </script>
 </body>
